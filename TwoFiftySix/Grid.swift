@@ -1,10 +1,24 @@
 import Foundation
 import Algorithms
 
+/// Type aliases used to communicate info back from the Grid to the caller without
+/// exposing any Tile objects.
+typealias TileReducer = (slot: Slot, id: UUID, value: Int)
+typealias Move = (tile: UUID, to: Slot)
+typealias Merge = (tile: UUID, absorbedTile: UUID, newValue: Int)
+typealias Assessment = (moves: [Move], merges: [Merge])
+
+/// Protocol describing the public face of the Grid.
+protocol GridType {
+    func empty()
+    func insertRandomTile() -> TileReducer?
+    func userMoved(direction: MoveDirection) -> Assessment
+}
+
 /// The Grid is the model object that embodies everything that happens in the game. It consists
 /// of slots, and manages tiles which go into those slots. It is the source of truth for the
-/// game and its logic, that is, the logic of gravity and merges when the user makes a move.
-final class Grid: CustomStringConvertible {
+/// game state and its move logic, that is, the logic of gravity and merges when the user moves.
+final class Grid: GridType, CustomStringConvertible {
     /// Array of arrays where the tiles live.
     private lazy var grid: [[Tile?]] = .init(repeating: .init(repeating: nil, count: 4), count: 4)
 
@@ -26,8 +40,8 @@ final class Grid: CustomStringConvertible {
     /// for each of the four possible moves the user can make, and they are unchanging, so it is
     /// silly to calculate them all every time the user moves; therefore we calculate them just
     /// once at the start of the game and retain them in this dictionary, keyed by direction.
-    lazy var allTraversals: [Direction: [[Slot]]] = {
-        Direction.allCases.reduce(into: [Direction: [[Slot]]]()) { result, direction in
+    lazy var allTraversals: [MoveDirection: [[Slot]]] = {
+        MoveDirection.allCases.reduce(into: [MoveDirection: [[Slot]]]()) { result, direction in
             result[direction] = traversals(forMoveDirection: direction)
         }
     }()
@@ -43,7 +57,7 @@ final class Grid: CustomStringConvertible {
     /// - Returns: An array of four traversals, one for each column or row of the grid. We can
     /// thus apply "gravity" to the entire grid by cycling through each of the four traversals
     /// in the array that is returned.
-    func traversals(forMoveDirection direction: Direction) -> [[Slot]] {
+    func traversals(forMoveDirection direction: MoveDirection) -> [[Slot]] {
         var starts = [Slot]()
         switch direction {
         case .up:
@@ -89,7 +103,7 @@ final class Grid: CustomStringConvertible {
     /// - Returns: The slot to which to move the tile, or `nil` if no empty slot was found in the
     /// given direction, in which case there is nothing to do — the tile is already as far as
     /// possible in that direction.
-    func furthestEmpty(in traversal: [Slot], from slot: Slot, direction: Direction) -> Slot? {
+    func furthestEmpty(in traversal: [Slot], from slot: Slot, direction: MoveDirection) -> Slot? {
         guard traversal.contains(slot) else {
             return nil // shouldn't happen
         }
@@ -109,7 +123,7 @@ final class Grid: CustomStringConvertible {
     /// - Parameters:
     ///   - traversal: The traversal.
     ///   - direction: The direction of the user's move.
-    func closeUp(traversal: [Slot], direction: Direction) {
+    func closeUp(traversal: [Slot], direction: MoveDirection) {
         for slot in traversal {
             if let tile = self[slot] {
                 if let empty = furthestEmpty(in: traversal, from: slot, direction: direction) {
@@ -141,17 +155,15 @@ final class Grid: CustomStringConvertible {
     /// close up all gaps, perform any merges, and then do another gravity pass in case the
     /// performance of merges itself left any gaps.
     /// - Parameter direction: The direction of the user's move.
-    func userMoved(direction: Direction) {
+    /// - Returns: The assessment describing the changes to the grid (see `assess()`).
+    func userMoved(direction: MoveDirection) -> Assessment {
         for traversal in (allTraversals[direction] ?? []) {
             closeUp(traversal: traversal, direction: direction)
             merge(traversal: traversal)
             closeUp(traversal: traversal, direction: direction)
         }
+        return assess()
     }
-
-    typealias Move = (tile: UUID, to: Slot)
-    typealias Merge = (tile: UUID, absorbedTile: UUID, newValue: Int)
-    typealias Assessment = (moves: [Move], merges: [Merge])
 
     /// This is the Really Tricky Part. After a call to `userMoved(direction:)`, the grid may
     /// have changed. We need to enact those same changes in the visible interface. In order to
@@ -207,8 +219,6 @@ final class Grid: CustomStringConvertible {
         return empties
     }
 
-    typealias TileReducer = (slot: Slot, id: UUID, value: Int)
-
     /// Insert a tile with a correctly randomized value ("usually 2, but possibly 4") into a
     /// random empty slot, and report what you did by returning a reducer describing the new tile.
     /// - Returns: Reducer describing the newly inserted tile, or nil if there was no room.
@@ -228,43 +238,43 @@ final class Grid: CustomStringConvertible {
     func empty() {
         grid = .init(repeating: .init(repeating: nil, count: 4), count: 4)
     }
-
-    /// A direction in which the user can move.
-    enum Direction: CaseIterable {
-        case up
-        case right
-        case down
-        case left
-        // The vector that, when added to a slot, yields the next slot in this direction.
-        var vector: Vector {
-            switch self {
-            case .up: Vector(x: 0, y: -1)
-            case .right: Vector(x: 1, y: 0)
-            case .down: Vector(x: 0, y: 1)
-            case .left: Vector(x: -1, y: 0)
-            }
-        }
-        /// A slot increment, i.e. the x and y (column and row) values that would need to be
-        /// _added to a slot_ in order to get the next slot in the given direction.
-        struct Vector {
-            let x: Int
-            let y: Int
-        }
-    }
 }
 
 /// An address in the grid — usable also to position a tile within the board. It is simply a
 /// column–row pair, so it is mostly a mere convenience. However, it also has the ability to be
-/// incremented or decremented in a given direction in order to reach
+/// incremented or decremented in a given direction, by means of a vector, in order to reach
 /// the next/previous adjacent slot.
 struct Slot: Equatable {
     let column: Int
     let row: Int
-    static func +(lhs: Slot, rhs: Grid.Direction.Vector) -> Slot {
+    static func +(lhs: Slot, rhs: MoveDirection.Vector) -> Slot {
         Slot(column: lhs.column + rhs.x, row: lhs.row + rhs.y)
     }
-    static func -(lhs: Slot, rhs: Grid.Direction.Vector) -> Slot {
+    static func -(lhs: Slot, rhs: MoveDirection.Vector) -> Slot {
         Slot(column: lhs.column - rhs.x, row: lhs.row - rhs.y)
+    }
+}
+
+/// A direction in which the user can move.
+enum MoveDirection: CaseIterable {
+    case up
+    case right
+    case down
+    case left
+    // The vector that, when added to a slot, yields the next slot in this direction.
+    var vector: Vector {
+        switch self {
+        case .up: Vector(x: 0, y: -1)
+        case .right: Vector(x: 1, y: 0)
+        case .down: Vector(x: 0, y: 1)
+        case .left: Vector(x: -1, y: 0)
+        }
+    }
+    /// A slot increment, i.e. the x and y (column and row) values that would need to be
+    /// _added to a slot_ in order to get the next slot in the given direction.
+    struct Vector {
+        let x: Int
+        let y: Int
     }
 }
 

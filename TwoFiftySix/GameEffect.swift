@@ -1,5 +1,5 @@
 enum GameEffect {
-    case add([Grid.TileReducer])
+    case add([TileReducer])
     case empty
-    case perform(assessment: Grid.Assessment)
+    case perform(assessment: Assessment)
 }

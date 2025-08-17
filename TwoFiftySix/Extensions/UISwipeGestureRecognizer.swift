@@ -1,8 +1,8 @@
 import UIKit
 
 extension UISwipeGestureRecognizer.Direction {
-    /// Convert a swipe direction to a grid direction.
-    var gridDirection: Grid.Direction {
+    /// Convert a swipe direction to a move direction.
+    var gridDirection: MoveDirection {
         switch self {
         case .up: .up
         case .down: .down

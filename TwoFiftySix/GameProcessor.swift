@@ -10,7 +10,8 @@ final class GameProcessor: Processor {
     /// State to be passed to the presenter for reflection in the interface.
     var state = GameState()
 
-    let grid = Grid()
+    /// The Grid, where the game model is stored and move logic is enacted upon that model.
+    let grid: (any GridType) = Grid()
 
     func receive(_ action: GameAction) async {
         switch action {
@@ -25,8 +26,7 @@ final class GameProcessor: Processor {
                 await presenter?.receive(.add([tile1, tile2]))
             }
         case .userMoved(let direction):
-            grid.userMoved(direction: direction.gridDirection)
-            let assessment = grid.assess()
+            let assessment = grid.userMoved(direction: direction.gridDirection)
             await presenter?.receive(.perform(assessment: assessment))
             if !assessment.moves.isEmpty || !assessment.merges.isEmpty {
                 if let tile = grid.insertRandomTile() {

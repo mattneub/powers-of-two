@@ -107,7 +107,7 @@ final class Board: UIView, Receiver {
     /// in corresponding slots, recording each one also in the `tiles` dictionary.
     /// - Parameter newTiles: The tiles, described by reducers. In real life there will be no
     /// more than two, and in fact always only one except at the start of a game.
-    func add(_ newTiles: [Grid.TileReducer]) async {
+    func add(_ newTiles: [TileReducer]) async {
         var newTileViews = [TileView]()
         for tile in newTiles {
             let frame = rectForTileView(at: tile.slot)
@@ -127,7 +127,7 @@ final class Board: UIView, Receiver {
     /// An Assessment is a description of how the tiles of the grid were changed by the user's
     /// move. Enact that description with the tile views.
     /// - Parameter assessment: The Assessment.
-    func perform(assessment: Grid.Assessment) async {
+    func perform(assessment: Assessment) async {
         var tilesToRemove = [TileView]()
         var tilesToChangeValue = [(TileView, Int)]()
         // Part One: move everything that needs to move.
