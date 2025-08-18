@@ -1,5 +1,8 @@
 import UIKit
 
+/// Single global instance of the services.
+let services = Services()
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

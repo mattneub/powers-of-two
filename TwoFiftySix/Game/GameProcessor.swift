@@ -15,8 +15,14 @@ final class GameProcessor: Processor {
 
     func receive(_ action: GameAction) async {
         switch action {
+        case .enteringBackground:
+            services.persistence.save(tiles: grid.tiles)
         case .initialInterface:
-            if let tile1 = grid.insertRandomTile(), let tile2 = grid.insertRandomTile() {
+            assert(grid.tiles.isEmpty, "grid not empty")
+            if let tiles = services.persistence.loadTiles() {
+                let newTiles = grid.setup(tiles: tiles)
+                await presenter?.receive(.add(newTiles))
+            } else if let tile1 = grid.insertRandomTile(), let tile2 = grid.insertRandomTile() {
                 await presenter?.receive(.add([tile1, tile2]))
             }
         case .newGame:

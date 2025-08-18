@@ -3,15 +3,16 @@ import Algorithms
 
 /// Type aliases used to communicate info back from the Grid to the caller without
 /// exposing any Tile objects.
-typealias TileReducer = (slot: Slot, id: UUID, value: Int)
 typealias Move = (tile: UUID, to: Slot)
 typealias Merge = (tile: UUID, absorbedTile: UUID, newValue: Int)
 typealias Assessment = (moves: [Move], merges: [Merge])
 
 /// Protocol describing the public face of the Grid.
 protocol GridType {
+    var tiles: [TileReducer] { get }
     func empty()
     func insertRandomTile() -> TileReducer?
+    func setup(tiles: [TileReducer]) -> [TileReducer]
     func userMoved(direction: MoveDirection) -> Assessment
 }
 
@@ -40,12 +41,19 @@ final class Grid: GridType, CustomStringConvertible {
         set { grid[slot.column][slot.row] = newValue }
     }
 
-    /// The only truly public entry point to the Grid. The user has moved by swiping in the given
-    /// direction: okay, apply the logic of the game rules! This means, simply, for each of the
-    /// four traversals appropriate to the direction in the user moves, apply gravity to
-    /// close up all gaps, perform any merges, and then do another gravity pass in case the
-    /// performance of merges itself left any gaps. Finally, request an immediate assessment of what
-    /// just happened, so that the changes can be enacted in the interface as wsell.
+    /// An array of reducers describing all tiles. The row and column are known because a tile
+    /// knows its own row and column, unless it has just been moved, in which case we shouldn't
+    /// be asking for this property!
+    var tiles: [TileReducer] {
+        grid.flatMap { $0 }.compactMap { $0 }.map { TileReducer(tile: $0) }
+    }
+
+    /// The user has moved by swiping in the given direction: okay, apply the logic of the game
+    /// rules! This means, simply, for each of the four traversals appropriate to the direction in
+    /// the user moves, apply gravity to close up all gaps, perform any merges, and then do another
+    /// gravity pass in case the performance of merges itself left any gaps. Finally, request an
+    /// immediate assessment of what just happened, so that the changes can be enacted in the
+    /// interface as well.
     /// - Parameter direction: The direction of the user's move.
     /// - Returns: The assessment describing the changes to the grid.
     func userMoved(direction: MoveDirection) -> Assessment {
@@ -70,6 +78,21 @@ final class Grid: GridType, CustomStringConvertible {
         return empties
     }
 
+    /// Create and insert the tiles described by the incoming tile reducers, and return a list of
+    /// tile reducers describing those tiles. The returned list is new, because the UUIDs of the
+    /// incoming tile reducers are ignored and are replaced by the UUIDs of the new tiles.
+    /// - Parameter tiles: The incoming tile reducers.
+    /// - Returns: The tile reducers representing the created and inserted tiles.
+    func setup(tiles: [TileReducer]) -> [TileReducer] {
+        var realTiles = [TileReducer]()
+        for tileReducer in tiles {
+            let tile = Tile(tileReducer: tileReducer)
+            self[tileReducer.slot] = tile
+            realTiles.append(TileReducer(tile: tile)) // get the new id
+        }
+        return realTiles
+    }
+
     /// Insert a tile with a correctly randomized value ("usually 2, but possibly 4") into a
     /// random empty slot, and report what you did by returning a reducer describing the new tile.
     /// - Returns: Reducer describing the newly inserted tile, or nil if there was no room.
@@ -80,7 +103,7 @@ final class Grid: GridType, CustomStringConvertible {
         if let slot = empties.first {
             let tile = Tile(value: value, column: slot.column, row: slot.row)
             self[slot] = tile
-            return ((slot: slot, id: tile.id, value: value))
+            return (TileReducer(tile: tile))
         }
         return nil // no room
     }
@@ -95,7 +118,7 @@ final class Grid: GridType, CustomStringConvertible {
 /// the board. It is simply a column–row pair, so it is mostly a mere convenience.
 /// However, it also has the ability to be incremented or decremented in a given direction,
 /// by means of a vector, in order to reach the next/previous adjacent slot.
-struct Slot: Equatable {
+struct Slot: Equatable, Codable {
     let column: Int
     let row: Int
     static func +(lhs: Slot, rhs: MoveDirection.Vector) -> Slot {

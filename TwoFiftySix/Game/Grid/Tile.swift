@@ -34,6 +34,16 @@ final class Tile: CustomStringConvertible {
         self.row = row
     }
 
+    /// Create a tile.
+    /// - Parameter tileReducer: A tile reducer describing the desired tile.
+    convenience init(tileReducer: TileReducer) {
+        self.init(
+            value: tileReducer.value,
+            column: tileReducer.slot.column,
+            row: tileReducer.slot.row
+        )
+    }
+
     /// Merge the given tile into this tile. To do so, sum their values (which had better be
     /// identical) and set this tile's `absorbed` to record what happened.
     func absorb(tile: Tile) {
@@ -46,3 +56,17 @@ final class Tile: CustomStringConvertible {
         "\(value), (\(column),\(row))"
     }
 }
+
+/// Reducer that lets us communicate information about a tile without sharing the tile itself.
+struct TileReducer: Codable {
+    let slot: Slot
+    let id: UUID
+    let value: Int
+
+    init(tile: Tile) {
+        self.slot = Slot(column: tile.column, row: tile.row)
+        self.id = tile.id
+        self.value = tile.value
+    }
+}
+

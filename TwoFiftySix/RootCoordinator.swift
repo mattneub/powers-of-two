@@ -6,6 +6,9 @@ protocol RootCoordinatorType: AnyObject {
     /// Set up the initial module for the entire app, putting the interface into the window.
     /// - Parameter window: The window.
     func createInitialInterface(window: UIWindow)
+
+    /// Deal with the fact that the app is entering the background.
+    func enteringBackground()
 }
 
 @MainActor
@@ -31,5 +34,11 @@ final class RootCoordinator: RootCoordinatorType {
         self.rootViewController = viewController
         processor.coordinator = self
         window.backgroundColor = .white
+    }
+
+    func enteringBackground() {
+        Task {
+            await gameProcessor?.receive(.enteringBackground)
+        }
     }
 }
