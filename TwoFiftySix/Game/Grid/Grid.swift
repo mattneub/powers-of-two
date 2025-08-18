@@ -18,6 +18,7 @@ protocol GridType {
 /// The Grid is the model object that embodies everything that happens in the game. It consists
 /// of slots, and manages tiles which go into those slots. It is the source of truth for the
 /// game state and its move logic, that is, the logic of gravity and merges when the user moves.
+/// A single instance exists, the servant of the GameProcessor.
 final class Grid: GridType, CustomStringConvertible {
     /// Array of arrays where the tiles live.
     private lazy var grid: [[Tile?]] = .init(repeating: .init(repeating: nil, count: 4), count: 4)
@@ -43,9 +44,10 @@ final class Grid: GridType, CustomStringConvertible {
     /// direction: okay, apply the logic of the game rules! This means, simply, for each of the
     /// four traversals appropriate to the direction in the user moves, apply gravity to
     /// close up all gaps, perform any merges, and then do another gravity pass in case the
-    /// performance of merges itself left any gaps.
+    /// performance of merges itself left any gaps. Finally, request an immediate assessment of what
+    /// just happened, so that the changes can be enacted in the interface as wsell.
     /// - Parameter direction: The direction of the user's move.
-    /// - Returns: The assessment describing the changes to the grid (see `assess()`).
+    /// - Returns: The assessment describing the changes to the grid.
     func userMoved(direction: MoveDirection) -> Assessment {
         for traversal in (gridLogic.allTraversals[direction] ?? []) {
             gridLogic.closeUp(traversal: traversal, direction: direction)
@@ -89,10 +91,10 @@ final class Grid: GridType, CustomStringConvertible {
     }
 }
 
-/// An address in the grid — usable also to position a tile within the board. It is simply a
-/// column–row pair, so it is mostly a mere convenience. However, it also has the ability to be
-/// incremented or decremented in a given direction, by means of a vector, in order to reach
-/// the next/previous adjacent slot.
+/// An address in the grid, where a tile can go — usable also to position a tile view within
+/// the board. It is simply a column–row pair, so it is mostly a mere convenience.
+/// However, it also has the ability to be incremented or decremented in a given direction,
+/// by means of a vector, in order to reach the next/previous adjacent slot.
 struct Slot: Equatable {
     let column: Int
     let row: Int

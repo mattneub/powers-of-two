@@ -12,7 +12,7 @@ final class Board: UIView, Receiver {
     var tileHeight = 0 as CGFloat
 
     /// The last recorded `bounds` value, from `layoutSubviews`. If this changes, we need to
-    /// redraw.
+    /// recalculate tile dimensions and redraw.
     var currentBounds = CGRect.zero
 
     /// Thickness of the "bars" that appear between the tile view places and round the outside.

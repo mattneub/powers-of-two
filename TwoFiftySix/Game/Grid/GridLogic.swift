@@ -9,6 +9,8 @@ protocol GridLogicType {
 /// Struct embodying the heart of the game logic for the grid. It moves and merges the tiles
 /// of the grid in response to a user's move, and reports an Assessment describing what
 /// was done so that the visible game board's tile views can reflect this.
+/// A single instance exists, as the servant of the Grid; the code is factored out of the Grid
+/// to make the code more testable.
 struct GridLogic: GridLogicType {
     unowned let grid: Grid
 
