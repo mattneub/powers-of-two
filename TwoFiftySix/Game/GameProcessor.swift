@@ -32,7 +32,7 @@ final class GameProcessor: Processor {
                 await presenter?.receive(.add([tile1, tile2]))
             }
         case .userMoved(let direction):
-            let assessment = grid.userMoved(direction: direction.gridDirection)
+            let assessment = grid.userMoved(direction: direction.moveDirection)
             await presenter?.receive(.perform(assessment: assessment))
             if !assessment.moves.isEmpty || !assessment.merges.isEmpty {
                 if let tile = grid.insertRandomTile() {

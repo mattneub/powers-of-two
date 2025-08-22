@@ -7,10 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F331C2D2E54BCEB009F15B4 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 3F331C2C2E54BCEB009F15B4 /* SnapshotTesting */; };
 		3F5E23032E4BDE0C00449714 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 3F5E23022E4BDE0C00449714 /* Algorithms */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3FAEED8F2E53DD210073EC6D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FE514D42E47C5510082C44E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3FE514DB2E47C5510082C44E;
+			remoteInfo = TwoFiftySix;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		3FAEED8B2E53DD210073EC6D /* TwoFiftySixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwoFiftySixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FAEED982E53DD900073EC6D /* TwoFiftySix.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TwoFiftySix.xctestplan; sourceTree = "<group>"; };
 		3FE514DC2E47C5510082C44E /* TwoFiftySix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoFiftySix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -25,6 +38,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		3FAEED8C2E53DD210073EC6D /* TwoFiftySixTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TwoFiftySixTests;
+			sourceTree = "<group>";
+		};
 		3FE514DE2E47C5510082C44E /* TwoFiftySix */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -36,6 +54,14 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3FAEED882E53DD210073EC6D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F331C2D2E54BCEB009F15B4 /* SnapshotTesting in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FE514D92E47C5510082C44E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -50,7 +76,9 @@
 		3FE514D32E47C5510082C44E = {
 			isa = PBXGroup;
 			children = (
+				3FAEED982E53DD900073EC6D /* TwoFiftySix.xctestplan */,
 				3FE514DE2E47C5510082C44E /* TwoFiftySix */,
+				3FAEED8C2E53DD210073EC6D /* TwoFiftySixTests */,
 				3FE514DD2E47C5510082C44E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				3FE514DC2E47C5510082C44E /* TwoFiftySix.app */,
+				3FAEED8B2E53DD210073EC6D /* TwoFiftySixTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -66,6 +95,30 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3FAEED8A2E53DD210073EC6D /* TwoFiftySixTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FAEED932E53DD210073EC6D /* Build configuration list for PBXNativeTarget "TwoFiftySixTests" */;
+			buildPhases = (
+				3FAEED872E53DD210073EC6D /* Sources */,
+				3FAEED882E53DD210073EC6D /* Frameworks */,
+				3FAEED892E53DD210073EC6D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3FAEED902E53DD210073EC6D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3FAEED8C2E53DD210073EC6D /* TwoFiftySixTests */,
+			);
+			name = TwoFiftySixTests;
+			packageProductDependencies = (
+				3F331C2C2E54BCEB009F15B4 /* SnapshotTesting */,
+			);
+			productName = TwoFiftySixTests;
+			productReference = 3FAEED8B2E53DD210073EC6D /* TwoFiftySixTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		3FE514DB2E47C5510082C44E /* TwoFiftySix */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3FE514EF2E47C5520082C44E /* Build configuration list for PBXNativeTarget "TwoFiftySix" */;
@@ -99,6 +152,11 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					3FAEED8A2E53DD210073EC6D = {
+						CreatedOnToolsVersion = 16.4;
+						LastSwiftMigration = 1640;
+						TestTargetID = 3FE514DB2E47C5510082C44E;
+					};
 					3FE514DB2E47C5510082C44E = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -115,6 +173,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				3F5E23012E4BDE0C00449714 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+				3F331C2B2E54BCEB009F15B4 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3FE514DD2E47C5510082C44E /* Products */;
@@ -122,11 +181,19 @@
 			projectRoot = "";
 			targets = (
 				3FE514DB2E47C5510082C44E /* TwoFiftySix */,
+				3FAEED8A2E53DD210073EC6D /* TwoFiftySixTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3FAEED892E53DD210073EC6D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FE514DA2E47C5510082C44E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,6 +204,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3FAEED872E53DD210073EC6D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FE514D82E47C5510082C44E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -146,7 +220,54 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3FAEED902E53DD210073EC6D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3FE514DB2E47C5510082C44E /* TwoFiftySix */;
+			targetProxy = 3FAEED8F2E53DD210073EC6D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		3FAEED912E53DD210073EC6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W3LHX5RGV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neuburg.matt.TwoFiftySixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TwoFiftySix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TwoFiftySix";
+			};
+			name = Debug;
+		};
+		3FAEED922E53DD210073EC6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W3LHX5RGV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neuburg.matt.TwoFiftySixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TwoFiftySix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TwoFiftySix";
+			};
+			name = Release;
+		};
 		3FE514F02E47C5520082C44E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -325,6 +446,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3FAEED932E53DD210073EC6D /* Build configuration list for PBXNativeTarget "TwoFiftySixTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FAEED912E53DD210073EC6D /* Debug */,
+				3FAEED922E53DD210073EC6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3FE514D72E47C5510082C44E /* Build configuration list for PBXProject "TwoFiftySix" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -346,6 +476,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3F331C2B2E54BCEB009F15B4 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.18.6;
+			};
+		};
 		3F5E23012E4BDE0C00449714 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-algorithms.git";
@@ -357,6 +495,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3F331C2C2E54BCEB009F15B4 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F331C2B2E54BCEB009F15B4 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
 		3F5E23022E4BDE0C00449714 /* Algorithms */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3F5E23012E4BDE0C00449714 /* XCRemoteSwiftPackageReference "swift-algorithms" */;

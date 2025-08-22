@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "D70B517E-96C1-4DDE-813F-C58E9B7D0E8A",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:TwoFiftySix.xcodeproj",
+      "identifier" : "3FE514DB2E47C5510082C44E",
+      "name" : "TwoFiftySix"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:TwoFiftySix.xcodeproj",
+        "identifier" : "3FAEED8A2E53DD210073EC6D",
+        "name" : "TwoFiftySixTests"
+      }
+    }
+  ],
+  "version" : 1
+}

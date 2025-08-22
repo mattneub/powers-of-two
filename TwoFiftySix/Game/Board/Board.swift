@@ -36,18 +36,16 @@ final class Board: UIView, Receiver {
         guard currentBounds != .zero else {
             return
         }
-        // Overall color.
-        UIColor.systemGray6.setFill()
-        UIBezierPath(rect: self.bounds).fill()
-        // Bars.
+        // margins (bars)
         UIColor.systemGray5.setFill()
-        for x in 0..<5 {
-            let bar = CGRect(x: CGFloat(x) * (borderWidth + tileWidth), y: 0, width: borderWidth, height: bounds.height)
-            UIBezierPath(rect: bar).fill()
-        }
-        for y in 0..<5 {
-            let bar = CGRect(x: 0, y: CGFloat(y) * (borderWidth + tileHeight), width: bounds.width, height: borderWidth)
-            UIBezierPath(rect: bar).fill()
+        UIBezierPath(rect: self.bounds).fill()
+        // squares
+        UIColor.systemGray6.setFill()
+        for x in 0..<4 {
+            for y in 0..<4 {
+                let rect = rectForTileView(at: Slot(column: x, row: y))
+                UIBezierPath(roundedRect: rect, cornerRadius: 16).fill()
+            }
         }
     }
 
@@ -105,8 +103,8 @@ final class Board: UIView, Receiver {
 
     /// Given an array of tiles, create corresponding TileViews with corresponding values
     /// in corresponding slots, recording each one also in the `tiles` dictionary.
-    /// - Parameter newTiles: The tiles, described by reducers. In real life there will be no
-    /// more than two, and in fact always only one except at the start of a game.
+    /// - Parameter newTiles: The tiles, described by reducers. In real life there will be
+    /// only one except at the start of a game or when restoring a board at launch.
     func add(_ newTiles: [TileReducer]) async {
         var newTileViews = [TileView]()
         for tile in newTiles {
@@ -117,7 +115,7 @@ final class Board: UIView, Receiver {
             addSubview(tileView)
             newTileViews.append(tileView)
         }
-        await UIView.animateAsync(withDuration: 0.1, delay: 0, options: []) {
+        await UIView.animateAsync(withDuration: unlessTesting(0.1), delay: 0, options: []) {
             for tileView in newTileViews {
                 tileView.transform = .identity
             }
@@ -131,7 +129,7 @@ final class Board: UIView, Receiver {
         var tilesToRemove = [TileView]()
         var tilesToChangeValue = [(TileView, Int)]()
         // Part One: move everything that needs to move.
-        await UIView.animateAsync(withDuration: 0.2, delay: 0, options: []) { [self] in
+        await UIView.animateAsync(withDuration: unlessTesting(0.2), delay: 0, options: []) { [self] in
             // To enact a move, animate the change in the tile view's frame origin.
             for move in assessment.moves {
                 let tile = tileView(id: move.tile)
@@ -161,12 +159,12 @@ final class Board: UIView, Receiver {
         for (tile, newValue) in tilesToChangeValue {
             tile.value = newValue
         }
-        await UIView.animateAsync(withDuration: 0.1, delay: 0, options: []) {
+        await UIView.animateAsync(withDuration: unlessTesting(0.1), delay: 0, options: []) {
             for (tile, _) in tilesToChangeValue {
                 tile.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
             }
         }
-        await UIView.animateAsync(withDuration: 0.1, delay: 0, options: []) {
+        await UIView.animateAsync(withDuration: unlessTesting(0.1), delay: 0, options: []) {
             for (tile, _) in tilesToChangeValue {
                 tile.transform = .identity
             }

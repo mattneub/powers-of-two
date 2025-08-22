@@ -7,8 +7,17 @@ final class TileView: UIView {
     /// The value (2, 4, 8, etc.) to be displayed. Changing the value changes the display.
     var value: Int {
         didSet {
-            setNeedsDisplay()
+            update()
         }
+    }
+
+    /// Label that portrays the value.
+    lazy var valueLabel = UILabel(frame: .zero).applying {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.font = UIFont(name: "Gill Sans", size: 30)
+        $0.textAlignment = .center
+        $0.minimumScaleFactor = 0.5
+        $0.adjustsFontSizeToFitWidth = true
     }
 
     /// The tile view's id, which must match the id of the tile that it portrays.
@@ -23,12 +32,18 @@ final class TileView: UIView {
         self.id = id
         self.value = value
         super.init(frame: frame)
-        // The rest is gravy.
         layer.borderWidth = 2
         layer.cornerRadius = 16
         clipsToBounds = true
         isOpaque = false
-        backgroundColor = nil
+        addSubview(valueLabel)
+        NSLayoutConstraint.activate([
+            valueLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            valueLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            valueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            valueLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+        ])
+        update()
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -58,32 +73,22 @@ final class TileView: UIView {
 
     /// Generate the tile's text color based on its proposed value. The colors come from
     /// the original app, https://github.com/gabrielecirulli/2048/blob/master/style/main.css
-    /// except that 2 and 4 are just black.
+    /// but I've made some modifications.
     /// - Parameter value: The proposed value for the tile.
     /// - Returns: The color to use as the text color.
     func textColor(forValue value: Int) -> UIColor {
         let hex: Int = switch value {
         case 2, 4: 0x000000
-        default: 0xf9f6f2
+        case 8, 16, 32, 64: 0xf9f6f2
+        default: 0x000000
         }
         return UIColor(rgb: hex)
     }
 
-    override func draw(_ rect: CGRect) {
-        // background
-        let backgroundColor = backgroundColor(forValue: self.value)
-        backgroundColor.setFill()
-        UIBezierPath(rect: rect).fill()
-        // text
-        let font = UIFont(name: "Gill Sans", size: 30)
-        let string = NSAttributedString(string: String(value), attributes: [
-            .font: font as Any,
-            .foregroundColor: textColor(forValue: self.value)
-        ])
-        let size = string.size()
-        string.draw(at: CGPoint(
-            x: bounds.width/2 - size.width/2,
-            y: bounds.height/2 - size.height/2
-        ))
+    /// Adjust text value and color, and background color, to match current value.
+    func update() {
+        valueLabel.text = String(value)
+        valueLabel.textColor = textColor(forValue: value)
+        backgroundColor = backgroundColor(forValue: value)
     }
 }

@@ -58,7 +58,7 @@ final class Tile: CustomStringConvertible {
 }
 
 /// Reducer that lets us communicate information about a tile without sharing the tile itself.
-struct TileReducer: Codable {
+struct TileReducer: Equatable, Codable {
     let slot: Slot
     let id: UUID
     let value: Int

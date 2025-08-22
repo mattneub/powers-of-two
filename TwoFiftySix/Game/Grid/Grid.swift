@@ -58,9 +58,9 @@ final class Grid: GridType, CustomStringConvertible {
     /// - Returns: The assessment describing the changes to the grid.
     func userMoved(direction: MoveDirection) -> Assessment {
         for traversal in (gridLogic.allTraversals[direction] ?? []) {
-            gridLogic.closeUp(traversal: traversal, direction: direction)
+            gridLogic.closeUp(traversal: traversal)
             gridLogic.merge(traversal: traversal)
-            gridLogic.closeUp(traversal: traversal, direction: direction)
+            gridLogic.closeUp(traversal: traversal)
         }
         return gridLogic.assess()
     }
@@ -97,15 +97,16 @@ final class Grid: GridType, CustomStringConvertible {
     /// random empty slot, and report what you did by returning a reducer describing the new tile.
     /// - Returns: Reducer describing the newly inserted tile, or nil if there was no room.
     func insertRandomTile() -> TileReducer? {
-        let rand = Double.random(in: 0.1...1.0)
-        let value = rand < 0.9 ? 2 : 4
-        let empties = emptySlots.shuffled().shuffled().shuffled().shuffled()
-        if let slot = empties.first {
-            let tile = Tile(value: value, column: slot.column, row: slot.row)
-            self[slot] = tile
-            return (TileReducer(tile: tile))
+        var empties = emptySlots
+        guard empties.count > 0 else {
+            return nil // no room
         }
-        return nil // no room
+        let value = Double.random(in: 0.1...1.0) < 0.9 ? 2 : 4 // straight from the original code
+        empties = empties.shuffled().shuffled().shuffled().shuffled()
+        let slot = empties[Int.random(in: 0..<empties.count)]
+        let tile = Tile(value: value, column: slot.column, row: slot.row)
+        self[slot] = tile
+        return (TileReducer(tile: tile))
     }
 
     /// Clear the grid, removing all tiles. This happens when a new game begins.
@@ -114,41 +115,5 @@ final class Grid: GridType, CustomStringConvertible {
     }
 }
 
-/// An address in the grid, where a tile can go — usable also to position a tile view within
-/// the board. It is simply a column–row pair, so it is mostly a mere convenience.
-/// However, it also has the ability to be incremented or decremented in a given direction,
-/// by means of a vector, in order to reach the next/previous adjacent slot.
-struct Slot: Equatable, Codable {
-    let column: Int
-    let row: Int
-    static func +(lhs: Slot, rhs: MoveDirection.Vector) -> Slot {
-        Slot(column: lhs.column + rhs.x, row: lhs.row + rhs.y)
-    }
-    static func -(lhs: Slot, rhs: MoveDirection.Vector) -> Slot {
-        Slot(column: lhs.column - rhs.x, row: lhs.row - rhs.y)
-    }
-}
 
-/// A direction in which the user can move.
-enum MoveDirection: CaseIterable {
-    case up
-    case right
-    case down
-    case left
-    // The vector that, when added to a slot, yields the next slot in this direction.
-    var vector: Vector {
-        switch self {
-        case .up: Vector(x: 0, y: -1)
-        case .right: Vector(x: 1, y: 0)
-        case .down: Vector(x: 0, y: 1)
-        case .left: Vector(x: -1, y: 0)
-        }
-    }
-    /// A slot increment, i.e. the x and y (column and row) values that would need to be
-    /// _added to a slot_ in order to get the next slot in the given direction.
-    struct Vector {
-        let x: Int
-        let y: Int
-    }
-}
 
