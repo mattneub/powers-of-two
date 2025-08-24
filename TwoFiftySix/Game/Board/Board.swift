@@ -133,7 +133,7 @@ final class Board: UIView, Receiver {
             // To enact a move, animate the change in the tile view's frame origin.
             for move in assessment.moves {
                 let tile = tileView(id: move.tile)
-                tile.frame.origin = rectForTileView(at: move.to).origin
+                tile.frame.origin = rectForTileView(at: move.slot).origin
             }
             // To enact a merge, animate the change in the absorbed tile view's frame origin.
             // (We send it to the back first, so that it passes behind the merge tile.)

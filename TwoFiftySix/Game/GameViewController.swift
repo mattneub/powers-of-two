@@ -1,37 +1,34 @@
 import UIKit
 
-class GameViewController: UIViewController, ReceiverPresenter {
+/// Main view controller of the app.
+final class GameViewController: UIViewController, ReceiverPresenter {
 
     /// Reference to the processor, set by the coordinator at module creation time.
     weak var processor: (any Processor<GameAction, GameState, GameEffect>)?
 
-    @IBOutlet var board: Board!
+    @IBOutlet var board: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // prepare to respond to swipe gestures
         do {
-            let g = UISwipeGestureRecognizer()
+            let g = MySwipeGestureRecognizer(target: self, action: #selector(swipe))
             g.direction = .up
-            g.addTarget(self, action: #selector(swipe))
             view.addGestureRecognizer(g)
         }
         do {
-            let g = UISwipeGestureRecognizer()
+            let g = MySwipeGestureRecognizer(target: self, action: #selector(swipe))
             g.direction = .down
-            g.addTarget(self, action: #selector(swipe))
             view.addGestureRecognizer(g)
         }
         do {
-            let g = UISwipeGestureRecognizer()
+            let g = MySwipeGestureRecognizer(target: self, action: #selector(swipe))
             g.direction = .left
-            g.addTarget(self, action: #selector(swipe))
             view.addGestureRecognizer(g)
         }
         do {
-            let g = UISwipeGestureRecognizer()
+            let g = MySwipeGestureRecognizer(target: self, action: #selector(swipe))
             g.direction = .right
-            g.addTarget(self, action: #selector(swipe))
             view.addGestureRecognizer(g)
         }
     }
@@ -49,7 +46,9 @@ class GameViewController: UIViewController, ReceiverPresenter {
     func present(_ state: GameState) async {}
 
     func receive(_ effect: GameEffect) async {
-        await board.receive(effect)
+        if let board = board as? any Receiver<GameEffect> {
+            await board.receive(effect)
+        }
     }
 
     /// The user performed a swipe gesture, which constitutes a move.
@@ -60,7 +59,7 @@ class GameViewController: UIViewController, ReceiverPresenter {
     }
 
     /// The user tapped the New Game button.
-    @IBAction func doNew (_ sender:Any) {
+    @IBAction func doNew(_ sender: Any) {
         Task {
             await processor?.receive(.newGame)
         }

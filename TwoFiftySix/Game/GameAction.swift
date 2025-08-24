@@ -1,6 +1,7 @@
 import UIKit
 
-enum GameAction {
+/// Actions sent to the GameProcessor, usually from its presenter.
+enum GameAction: Equatable {
     case enteringBackground
     case initialInterface
     case newGame

@@ -12,3 +12,14 @@ extension UISwipeGestureRecognizer.Direction {
         }
     }
 }
+
+/// Subclass of swipe gesture recognizer that gives us access to the target and action, for testing.
+final class MySwipeGestureRecognizer: UISwipeGestureRecognizer {
+    weak var target: AnyObject?
+    var action: Selector?
+    override init(target: Any?, action: Selector?) {
+        self.target = target as? AnyObject
+        self.action = action
+        super.init(target: target, action: action)
+    }
+}

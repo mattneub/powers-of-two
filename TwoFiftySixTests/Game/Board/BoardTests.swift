@@ -103,8 +103,8 @@ struct BoardTests {
         await subject.add(tiles.map(TileReducer.init(tile:)))
         let ids = tiles.map(\.id)
         let moves: [Move] = [
-            (tile: ids[1], to: Slot(column: 0, row: 0)),
-            (tile: ids[2], to: Slot(column: 0, row: 0)),
+            .init(tile: ids[1], slot: Slot(column: 0, row: 0)),
+            .init(tile: ids[2], slot: Slot(column: 0, row: 0)),
         ]
         let assessment = Assessment(moves: moves, merges: [])
         // that was prep, here comes the test
@@ -148,7 +148,7 @@ struct BoardTests {
         await subject.add(tiles.map(TileReducer.init(tile:)))
         let ids = tiles.map(\.id)
         let merges: [Merge] = [
-            (tile: ids[1], absorbedTile: ids[2], newValue: 100),
+            .init(tile: ids[1], absorbedTile: ids[2], newValue: 100),
         ]
         let assessment = Assessment(moves: [], merges: merges)
         // that was prep, here comes the test
@@ -185,11 +185,11 @@ struct BoardTests {
         await subject.add(tiles.map(TileReducer.init(tile:)))
         let ids = tiles.map(\.id)
         let moves: [Move] = [
-            (tile: ids[1], to: Slot(column: 0, row: 0)),
-            (tile: ids[2], to: Slot(column: 0, row: 0)),
+            .init(tile: ids[1], slot: Slot(column: 0, row: 0)),
+            .init(tile: ids[2], slot: Slot(column: 0, row: 0)),
         ]
         let merges: [Merge] = [
-            (tile: ids[0], absorbedTile: ids[2], newValue: 100),
+            .init(tile: ids[0], absorbedTile: ids[2], newValue: 100),
         ]
         let assessment = Assessment(moves: moves, merges: merges)
         // that was prep, here comes the test

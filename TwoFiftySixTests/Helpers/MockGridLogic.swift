@@ -2,9 +2,13 @@
 
 final class MockGridLogic: GridLogicType {
     var methodsCalled = [String]()
-    var allTraversals = [MoveDirection: [Traversal]]()
+    var _allTraversals = [MoveDirection: [Traversal]]()
     var traversals = [Traversal]()
     var assessment = Assessment(moves: [], merges: [])
+
+    func traversals(_ direction: MoveDirection) -> [Traversal] {
+        return _allTraversals[direction, default: []]
+    }
 
     func closeUp(traversal: Traversal) {
         methodsCalled.append(#function)

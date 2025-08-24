@@ -1,11 +1,6 @@
 import Foundation
 import Algorithms
 
-/// Type aliases used to communicate info back from the Grid to the caller without
-/// exposing any Tile objects.
-typealias Move = (tile: UUID, to: Slot)
-typealias Merge = (tile: UUID, absorbedTile: UUID, newValue: Int)
-typealias Assessment = (moves: [Move], merges: [Merge])
 
 /// Protocol describing the public face of the Grid.
 protocol GridType {
@@ -57,7 +52,7 @@ final class Grid: GridType, CustomStringConvertible {
     /// - Parameter direction: The direction of the user's move.
     /// - Returns: The assessment describing the changes to the grid.
     func userMoved(direction: MoveDirection) -> Assessment {
-        for traversal in (gridLogic.allTraversals[direction] ?? []) {
+        for traversal in gridLogic.traversals(direction) {
             gridLogic.closeUp(traversal: traversal)
             gridLogic.merge(traversal: traversal)
             gridLogic.closeUp(traversal: traversal)

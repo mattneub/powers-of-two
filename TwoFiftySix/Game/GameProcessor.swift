@@ -1,3 +1,4 @@
+/// Processor that manages the overall game logic and app behavior.
 @MainActor
 final class GameProcessor: Processor {
     
@@ -11,7 +12,7 @@ final class GameProcessor: Processor {
     var state = GameState()
 
     /// The Grid, where the game model is stored and move logic is enacted upon that model.
-    let grid: (any GridType) = Grid()
+    var grid: (any GridType) = Grid()
 
     func receive(_ action: GameAction) async {
         switch action {

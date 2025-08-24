@@ -1,6 +1,6 @@
 /// Public face of the `GridLogic` object.
 protocol GridLogicType {
-    var allTraversals: [MoveDirection: [Traversal]] { get }
+    func traversals(_ direction: MoveDirection) -> [Traversal]
     func closeUp(traversal: Traversal)
     func merge(traversal: Traversal)
     func assess() -> Assessment
@@ -18,7 +18,13 @@ struct GridLogic: GridLogicType {
     /// and they are unchanging, so it is silly to calculate them all every time the user moves;
     /// therefore we calculate them just once at the start of the game and retain them in
     /// this dictionary, keyed by direction.
-    let allTraversals: [MoveDirection: [Traversal]]
+    private let _allTraversals: [MoveDirection: [Traversal]]
+
+    /// Public access to the preceding dictionary, because dictionary subscripting returns
+    /// an Optional which is ridiculous given that we are fully keyed on an enum case.
+    func traversals(_ direction: MoveDirection) -> [Traversal] {
+        return _allTraversals[direction, default: []]
+    }
 
     init(grid: Grid) {
         self.grid = grid
@@ -55,7 +61,7 @@ struct GridLogic: GridLogicType {
             return result.map { Traversal($0, direction: direction) }
         }
         // Set `allTraversals` to a dictionary of the four traversals for _all four_ directions.
-        self.allTraversals = MoveDirection.allCases.reduce(
+        self._allTraversals = MoveDirection.allCases.reduce(
             into: [MoveDirection: [Traversal]]()
         ) { result, direction in
             result[direction] = traversals(forMoveDirection: direction)
@@ -140,14 +146,14 @@ struct GridLogic: GridLogicType {
             for row in 0..<4 {
                 if let tile = grid[column, row] {
                     if tile.column != column || tile.row != row {
-                        movedTiles.append((
+                        movedTiles.append(Move(
                             tile: tile.id,
-                            to: Slot(column: column, row: row)
+                            slot: Slot(column: column, row: row)
                         ))
                         (tile.column, tile.row) = (column, row)
                     }
                     if let absorbed = tile.absorbed {
-                        mergedTiles.append((
+                        mergedTiles.append(Merge(
                             tile: tile.id,
                             absorbedTile: absorbed.id,
                             newValue: tile.value
@@ -157,7 +163,7 @@ struct GridLogic: GridLogicType {
                 }
             }
         }
-        return (moves: movedTiles, merges: mergedTiles)
+        return Assessment(moves: movedTiles, merges: mergedTiles)
     }
 }
 

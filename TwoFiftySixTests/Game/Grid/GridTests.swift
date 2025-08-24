@@ -68,14 +68,15 @@ struct GridTests {
 
     @Test("userMoved: for each traversal for given direction, calls closeUp, merge, closeUp; then calls and returns assess")
     func userMoved() {
-        let allTraversals = GridLogic(grid: Grid()).allTraversals
-        let up1 = allTraversals[.up]![0]
-        let up2 = allTraversals[.up]![1]
-        gridLogic.allTraversals[.up] = [up1, up2]
-        let down = allTraversals[.down]![0]
-        gridLogic.allTraversals[.down] = [down]
+        let allTraversals = GridLogic(grid: Grid()).traversals
+        let ups = allTraversals(.up)
+        let up1 = ups[0]
+        let up2 = ups[1]
+        gridLogic._allTraversals[.up] = [up1, up2]
+        let down = allTraversals(.down)[0]
+        gridLogic._allTraversals[.down] = [down]
         let id = UUID()
-        gridLogic.assessment = Assessment(moves: [Move(tile: id, to: Slot(column: 3, row: 3))], merges: [])
+        gridLogic.assessment = Assessment(moves: [Move(tile: id, slot: Slot(column: 3, row: 3))], merges: [])
         let result = subject.userMoved(direction: .up)
         #expect(gridLogic.methodsCalled == [
             "closeUp(traversal:)", "merge(traversal:)", "closeUp(traversal:)",
@@ -95,8 +96,8 @@ struct GridTests {
         #expect(gridLogic.traversals == [down, down, down])
         #expect(result.moves.count == 1)
         #expect(result.moves.first?.tile == id)
-        #expect(result.moves.first?.to.column == 3)
-        #expect(result.moves.first?.to.row == 3)
+        #expect(result.moves.first?.slot.column == 3)
+        #expect(result.moves.first?.slot.row == 3)
         #expect(result.merges.isEmpty)
     }
 
