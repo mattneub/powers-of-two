@@ -2,6 +2,7 @@
 
 final class MockUserDefaults: UserDefaultsType {
     var methodsCalled = [String]()
+    var arrayToReturn: [Any]?
     var objectToReturn: Any?
     var objectSet: Any?
     var key: String?
@@ -17,6 +18,11 @@ final class MockUserDefaults: UserDefaultsType {
         self.key = key
         return self.objectToReturn
     }
-    
+
+    func array(forKey key: String) -> [Any]? {
+        methodsCalled.append(#function)
+        self.key = key
+        return self.arrayToReturn
+    }
 
 }

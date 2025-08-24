@@ -8,10 +8,12 @@ struct GameViewControllerTests {
     let subject = GameViewController()
     let processor = MockProcessor<GameAction, GameState, GameEffect>()
     let board = MockBoard()
+    let highest = UILabel()
 
     init() {
         subject.processor = processor
         subject.board = board
+        subject.highest = highest
     }
 
     @Test("viewDidLoad: adds swipe gesture recognizers")

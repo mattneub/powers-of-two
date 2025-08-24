@@ -4,6 +4,7 @@ import UIKit
 protocol UserDefaultsType {
     func set(_: Any?, forKey: String)
     func object(forKey: String) -> Any?
+    func array(forKey: String) -> [Any]?
 }
 
 extension UserDefaults: UserDefaultsType {}
