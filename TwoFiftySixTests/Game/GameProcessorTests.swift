@@ -32,9 +32,11 @@ struct GameProcessorTests {
         persistence.tilesToReturn = [reducer]
         let reducer2 = TileReducer(tile: Tile(value: 2, column: 3, row: 4))
         grid.tilesToReturn = [reducer2]
+        grid.highestValue = 200
         await subject.receive(.initialInterface)
         #expect(grid.methodsCalled == ["setup(tiles:)"])
         #expect(presenter.thingsReceived == [.add([reducer2])])
+        #expect(presenter.statesPresented.last?.highestValue == 200)
     }
 
     @Test("receive initialInterface: if persistence return nil, calls insertRandomTile twice, sends results to presenter add")
@@ -46,6 +48,21 @@ struct GameProcessorTests {
         await subject.receive(.initialInterface)
         #expect(grid.methodsCalled == ["insertRandomTile()", "insertRandomTile()"])
         #expect(presenter.thingsReceived == [.add([reducer, reducer2])])
+    }
+
+    @Test("receive newGame: if grid highest value is under 64, no calls to persistence")
+    func newGameHighestValueLow() async {
+        grid.highestValue = 2
+        await subject.receive(.newGame)
+        #expect(persistence.methodsCalled.isEmpty)
+    }
+
+    @Test("receive newGame: if grid highest value is over 64, saves it to persistence")
+    func newGameHighestValueHigh() async {
+        grid.highestValue = 65
+        await subject.receive(.newGame)
+        #expect(persistence.methodsCalled == ["append(highScore:)"])
+        #expect(persistence.scoreToAppend == 65)
     }
 
     @Test("receive newGame: calls grid and presenter empty, calls insertRandomTile twice, sends results to presenter add")
@@ -65,10 +82,12 @@ struct GameProcessorTests {
             merges: [.init(tile: UUID(), absorbedTile: UUID(), newValue: 100)]
         )
         grid.assessment = assessment
+        grid.highestValue = 200
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled.first == "userMoved(direction:)")
         #expect(grid.direction == .up)
         #expect(presenter.thingsReceived.first == .perform(assessment: assessment))
+        #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
     @Test("received userMoved(direction:): if assessment is empty, stops")
@@ -80,9 +99,11 @@ struct GameProcessorTests {
             merges: []
         )
         grid.assessment = assessment
+        grid.highestValue = 200
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment)])
+        #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
     @Test("receive userMoved(direction:): if assessment not empty, calls grid insertRandomTile() once, if not nil, sends result to presenter add")
@@ -94,9 +115,11 @@ struct GameProcessorTests {
             merges: []
         )
         grid.assessment = assessment
+        grid.highestValue = 200
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)", "insertRandomTile()"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment), .add([reducer])])
+        #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
     @Test("receive userMoved(direction:): if assessment not empty, calls grid insertRandomTile() once, if nil, stops")
@@ -107,8 +130,10 @@ struct GameProcessorTests {
             merges: []
         )
         grid.assessment = assessment
+        grid.highestValue = 200
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)", "insertRandomTile()"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment)])
+        #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 }

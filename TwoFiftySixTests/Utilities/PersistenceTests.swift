@@ -34,4 +34,35 @@ struct PersistenceTests {
         #expect(userDefaults.key == "tiles")
         #expect(result == tiles)
     }
+
+    @Test("append(highScore:) calls array for highScores, set for highScores with appended score")
+    func appendHighScore() {
+        userDefaults.arrayToReturn = nil
+        subject.append(highScore: 1)
+        #expect(userDefaults.methodsCalled == ["array(forKey:)", "set(_:forKey:)"])
+        #expect(userDefaults.key == "highScores") // not a very good test
+        #expect(userDefaults.objectSet as? [Int] == [1])
+        //
+        userDefaults.arrayToReturn = [1, 2]
+        userDefaults.methodsCalled = []
+        subject.append(highScore: 3)
+        #expect(userDefaults.methodsCalled == ["array(forKey:)", "set(_:forKey:)"])
+        #expect(userDefaults.key == "highScores") // not a very good test
+        #expect(userDefaults.objectSet as? [Int] == [1, 2, 3])
+    }
+
+    @Test("loadHighScores: calls array for high scores")
+    func loadHighScores() {
+        userDefaults.arrayToReturn = nil
+        var result = subject.loadHighScores()
+        #expect(userDefaults.methodsCalled == ["array(forKey:)"])
+        #expect(userDefaults.key == "highScores")
+        #expect(result == nil)
+        //
+        userDefaults.arrayToReturn = [1, 2]
+        result = subject.loadHighScores()
+        #expect(userDefaults.methodsCalled == ["array(forKey:)", "array(forKey:)"])
+        #expect(userDefaults.key == "highScores")
+        #expect(result == [1, 2])
+    }
 }

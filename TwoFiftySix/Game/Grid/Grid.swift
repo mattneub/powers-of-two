@@ -5,6 +5,7 @@ import Algorithms
 /// Protocol describing the public face of the Grid.
 protocol GridType {
     var tiles: [TileReducer] { get }
+    var highestValue: Int { get }
     func empty()
     func insertRandomTile() -> TileReducer?
     func setup(tiles: [TileReducer]) -> [TileReducer]
@@ -41,6 +42,11 @@ final class Grid: GridType, CustomStringConvertible {
     /// be asking for this property!
     var tiles: [TileReducer] {
         grid.flatMap { $0 }.compactMap { $0 }.map { TileReducer(tile: $0) }
+    }
+
+    /// The highest value of any tile in the grid.
+    var highestValue: Int {
+        grid.flatMap { $0 }.compactMap { $0?.value }.max() ?? 2
     }
 
     /// The user has moved by swiping in the given direction: okay, apply the logic of the game

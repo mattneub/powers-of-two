@@ -40,14 +40,22 @@
                                     <fontDescription key="titleFontDescription" type="system" pointSize="20"/>
                                 </buttonConfiguration>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="USy-OH-WKD">
+                                <rect key="frame" x="20.000000000000004" y="126.66666666666667" width="55.333333333333343" height="23.333333333333329"/>
+                                <fontDescription key="fontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Mvt-rD-gWW" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="0vE-CF-NqF"/>
                             <constraint firstItem="jjB-P7-EsX" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="7Jr-Yb-wOz"/>
+                            <constraint firstItem="3ZU-ae-0JU" firstAttribute="top" secondItem="USy-OH-WKD" secondAttribute="bottom" constant="8" id="8dc-bZ-0XJ"/>
                             <constraint firstItem="3ZU-ae-0JU" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Cv0-os-8lO"/>
                             <constraint firstItem="3ZU-ae-0JU" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="Qkh-Nu-1yb"/>
+                            <constraint firstItem="3ZU-ae-0JU" firstAttribute="leading" secondItem="USy-OH-WKD" secondAttribute="leading" id="cei-nB-YhA"/>
                             <constraint firstItem="Mvt-rD-gWW" firstAttribute="top" secondItem="3ZU-ae-0JU" secondAttribute="bottom" constant="30" id="dhu-lU-TIe"/>
                             <constraint firstItem="jjB-P7-EsX" firstAttribute="top" secondItem="Mvt-rD-gWW" secondAttribute="bottom" constant="26" id="eHp-a1-rFo"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3ZU-ae-0JU" secondAttribute="trailing" constant="20" id="url-xf-qeq"/>
@@ -55,6 +63,7 @@
                     </view>
                     <connections>
                         <outlet property="board" destination="3ZU-ae-0JU" id="3l8-gt-m7u"/>
+                        <outlet property="highest" destination="USy-OH-WKD" id="5eY-Ds-CBz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

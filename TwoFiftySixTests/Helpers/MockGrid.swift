@@ -3,6 +3,7 @@
 final class MockGrid: GridType {
     var methodsCalled = [String]()
     var tiles: [TileReducer] = [TileReducer]()
+    var highestValue = 2
     var tilesToReturn = [TileReducer]()
     var assessment = Assessment(moves: [], merges: [])
     var direction: MoveDirection?

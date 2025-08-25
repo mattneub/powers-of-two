@@ -66,6 +66,17 @@ struct GridTests {
         #expect(tile2 == TileReducer(tile: initialTile2))
     }
 
+    @Test("highestValue: returns the highest value for any tile, or 2 if none")
+    func highestValue() {
+        #expect(subject.highestValue == 2)
+        let initialTile1 = Tile(value: 100, column: 1, row: 1)
+        let initialTile2 = Tile(value: 200, column: 2, row: 2)
+        subject[1,1] = initialTile1
+        #expect(subject.highestValue == 100)
+        subject[2,2] = initialTile2
+        #expect(subject.highestValue == 200)
+    }
+
     @Test("userMoved: for each traversal for given direction, calls closeUp, merge, closeUp; then calls and returns assess")
     func userMoved() {
         let allTraversals = GridLogic(grid: Grid()).traversals

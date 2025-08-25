@@ -8,8 +8,11 @@ final class GameViewController: UIViewController, ReceiverPresenter {
 
     @IBOutlet var board: UIView!
 
+    @IBOutlet var highest: UILabel!
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        highest.text = ""
         // prepare to respond to swipe gestures
         do {
             let g = MySwipeGestureRecognizer(target: self, action: #selector(swipe))
@@ -43,7 +46,13 @@ final class GameViewController: UIViewController, ReceiverPresenter {
         }
     }
 
-    func present(_ state: GameState) async {}
+    func present(_ state: GameState) async {
+        if state.highestValue > 4 {
+            highest.text = String(state.highestValue)
+        } else {
+            highest.text = ""
+        }
+    }
 
     func receive(_ effect: GameEffect) async {
         if let board = board as? any Receiver<GameEffect> {

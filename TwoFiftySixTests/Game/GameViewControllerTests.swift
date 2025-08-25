@@ -8,14 +8,17 @@ struct GameViewControllerTests {
     let subject = GameViewController()
     let processor = MockProcessor<GameAction, GameState, GameEffect>()
     let board = MockBoard()
+    let highest = UILabel()
 
     init() {
         subject.processor = processor
         subject.board = board
+        subject.highest = highest
+        highest.text = "hello"
     }
 
-    @Test("viewDidLoad: adds swipe gesture recognizers")
-    func loadView() throws {
+    @Test("viewDidLoad: adds swipe gesture recognizers, empties highest label")
+    func viewDidLoad() throws {
         let recognizers = try #require(subject.view.gestureRecognizers)
         #expect(recognizers.count == 4)
         #expect(recognizers.allSatisfy { $0 is UISwipeGestureRecognizer })
@@ -26,6 +29,7 @@ struct GameViewControllerTests {
         #expect(directions.contains(.right))
         #expect(recognizers.allSatisfy { ($0 as! MySwipeGestureRecognizer).target === subject })
         #expect(recognizers.allSatisfy { ($0 as! MySwipeGestureRecognizer).action == #selector(subject.swipe) })
+        #expect(highest.text == "")
     }
 
     @Test("layoutSubviews: sends processor initialInterface first time only")
@@ -37,6 +41,16 @@ struct GameViewControllerTests {
         subject.view.layoutIfNeeded()
         try await Task.sleep(for: .seconds(0.1))
         #expect(processor.thingsReceived == [.initialInterface])
+    }
+
+    @Test("present: sets highest label to empty or highest value, cutting above 4")
+    func present() async {
+        var state = GameState(highestValue: 4)
+        await subject.present(state)
+        #expect(highest.text == "")
+        state.highestValue = 5
+        await subject.present(state)
+        #expect(highest.text == "5")
     }
 
     @Test("receive: passes effect on to board")
