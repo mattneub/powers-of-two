@@ -46,7 +46,7 @@ final class Grid: GridType, CustomStringConvertible {
 
     /// The highest value of any tile in the grid.
     var highestValue: Int {
-        tiles.map { $0.value }.max() ?? 2
+        grid.flatMap { $0 }.compactMap { $0?.value }.max() ?? 2
     }
 
     /// The user has moved by swiping in the given direction: okay, apply the logic of the game
