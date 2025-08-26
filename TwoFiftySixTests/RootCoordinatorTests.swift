@@ -19,6 +19,21 @@ struct RootCoordinatorTests {
         #expect(window.backgroundColor == .white)
     }
 
+    @Test("showStats: creates and configures stats module, presents view controller")
+    func showStats() async throws {
+        let dummyViewController = UIViewController()
+        makeWindow(viewController: dummyViewController)
+        let subject = RootCoordinator()
+        subject.rootViewController = dummyViewController
+        subject.showStats()
+        await #while(dummyViewController.presentedViewController == nil)
+        let viewController = try #require(dummyViewController.presentedViewController as? StatsViewController)
+        let processor = try #require(subject.statsProcessor as? StatsProcessor)
+        #expect(processor.presenter === viewController)
+        #expect(viewController.processor === processor)
+        #expect(processor.coordinator === subject)
+    }
+
     @Test("enteringBackground: sends enteringBackground to game processor")
     func enteringBackground() async {
         let processor = MockProcessor<GameAction, GameState, GameEffect>()

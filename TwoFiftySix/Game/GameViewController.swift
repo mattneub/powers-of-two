@@ -12,7 +12,7 @@ final class GameViewController: UIViewController, ReceiverPresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        highest.text = ""
+        highest.text = " "
         // prepare to respond to swipe gestures
         do {
             let g = MySwipeGestureRecognizer(target: self, action: #selector(swipe))
@@ -50,7 +50,7 @@ final class GameViewController: UIViewController, ReceiverPresenter {
         if state.highestValue > 4 {
             highest.text = String(state.highestValue)
         } else {
-            highest.text = ""
+            highest.text = " "
         }
     }
 
@@ -71,6 +71,13 @@ final class GameViewController: UIViewController, ReceiverPresenter {
     @IBAction func doNew(_ sender: Any) {
         Task {
             await processor?.receive(.newGame)
+        }
+    }
+
+    /// The user tapped the Stats button.
+    @IBAction func doStats(_ sender: Any) {
+        Task {
+            await processor?.receive(.stats)
         }
     }
 

@@ -42,6 +42,8 @@ final class GameProcessor: Processor {
             if let tile1 = grid.insertRandomTile(), let tile2 = grid.insertRandomTile() {
                 await presenter?.receive(.add([tile1, tile2]))
             }
+        case .stats:
+            coordinator?.showStats()
         case .userMoved(let direction):
             let assessment = grid.userMoved(direction: direction.moveDirection)
             await presenter?.receive(.perform(assessment: assessment))

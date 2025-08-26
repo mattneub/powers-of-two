@@ -46,6 +46,17 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dc2-c7-i6h">
+                                <rect key="frame" x="304" y="122.33333333333331" width="69" height="32"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="tinted" title="Stats" cornerStyle="medium">
+                                    <fontDescription key="titleFontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="20"/>
+                                    <directionalEdgeInsets key="contentInsets" top="4" leading="8" bottom="4" trailing="8"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="doStats:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JDw-RS-kAN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -57,7 +68,9 @@
                             <constraint firstItem="3ZU-ae-0JU" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="Qkh-Nu-1yb"/>
                             <constraint firstItem="3ZU-ae-0JU" firstAttribute="leading" secondItem="USy-OH-WKD" secondAttribute="leading" id="cei-nB-YhA"/>
                             <constraint firstItem="Mvt-rD-gWW" firstAttribute="top" secondItem="3ZU-ae-0JU" secondAttribute="bottom" constant="30" id="dhu-lU-TIe"/>
+                            <constraint firstItem="Dc2-c7-i6h" firstAttribute="trailing" secondItem="3ZU-ae-0JU" secondAttribute="trailing" id="dsb-ZP-Ild"/>
                             <constraint firstItem="jjB-P7-EsX" firstAttribute="top" secondItem="Mvt-rD-gWW" secondAttribute="bottom" constant="26" id="eHp-a1-rFo"/>
+                            <constraint firstItem="Dc2-c7-i6h" firstAttribute="firstBaseline" secondItem="USy-OH-WKD" secondAttribute="firstBaseline" id="ehf-0U-tTu"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3ZU-ae-0JU" secondAttribute="trailing" constant="20" id="url-xf-qeq"/>
                         </constraints>
                     </view>

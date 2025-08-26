@@ -29,7 +29,7 @@ struct GameViewControllerTests {
         #expect(directions.contains(.right))
         #expect(recognizers.allSatisfy { ($0 as! MySwipeGestureRecognizer).target === subject })
         #expect(recognizers.allSatisfy { ($0 as! MySwipeGestureRecognizer).action == #selector(subject.swipe) })
-        #expect(highest.text == "")
+        #expect(highest.text == " ")
     }
 
     @Test("layoutSubviews: sends processor initialInterface first time only")
@@ -47,7 +47,7 @@ struct GameViewControllerTests {
     func present() async {
         var state = GameState(highestValue: 4)
         await subject.present(state)
-        #expect(highest.text == "")
+        #expect(highest.text == " ")
         state.highestValue = 5
         await subject.present(state)
         #expect(highest.text == "5")
@@ -79,6 +79,13 @@ struct GameViewControllerTests {
         subject.doNew(self)
         await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived.first == .newGame)
+    }
+
+    @Test("doStats: calls stats")
+    func doStats() async {
+        subject.doStats(self)
+        await #while(processor.thingsReceived.isEmpty)
+        #expect(processor.thingsReceived.first == .stats)
     }
 }
 

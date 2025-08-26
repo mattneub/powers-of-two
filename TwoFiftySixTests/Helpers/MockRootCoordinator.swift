@@ -9,7 +9,11 @@ final class MockRootCoordinator: RootCoordinatorType {
         methodsCalled.append(#function)
         self.window = window
     }
-    
+
+    func showStats() {
+        methodsCalled.append(#function)
+    }
+
     func enteringBackground() {
         methodsCalled.append(#function)
     }
