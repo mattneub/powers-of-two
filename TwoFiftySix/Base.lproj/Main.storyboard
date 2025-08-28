@@ -119,7 +119,6 @@
                                     <constraint firstItem="AfA-Gy-PhT" firstAttribute="trailing" secondItem="agK-jT-Ovg" secondAttribute="trailing" id="6md-1s-MOK"/>
                                     <constraint firstItem="AfA-Gy-PhT" firstAttribute="top" secondItem="G7z-9U-G5f" secondAttribute="top" id="94A-jh-Sju"/>
                                     <constraint firstItem="AfA-Gy-PhT" firstAttribute="trailing" secondItem="G7z-9U-G5f" secondAttribute="trailing" id="E2p-La-j62"/>
-                                    <constraint firstItem="AfA-Gy-PhT" firstAttribute="top" secondItem="agK-jT-Ovg" secondAttribute="top" id="EH7-Jk-arT"/>
                                     <constraint firstItem="AfA-Gy-PhT" firstAttribute="bottom" secondItem="G7z-9U-G5f" secondAttribute="bottom" id="RlK-Bm-hgm"/>
                                     <constraint firstItem="AfA-Gy-PhT" firstAttribute="leading" secondItem="G7z-9U-G5f" secondAttribute="leading" id="g4U-yj-jDc"/>
                                 </constraints>
@@ -130,7 +129,7 @@
                         <viewLayoutGuide key="safeArea" id="0Er-12-Y8T"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="vdg-La-sLv" secondAttribute="bottom" id="Kwz-tr-huw"/>
+                            <constraint firstItem="0Er-12-Y8T" firstAttribute="bottom" secondItem="vdg-La-sLv" secondAttribute="bottom" id="Kwz-tr-huw"/>
                             <constraint firstAttribute="trailing" secondItem="vdg-La-sLv" secondAttribute="trailing" id="VRe-kN-Qzt"/>
                             <constraint firstItem="EYg-Xp-nCe" firstAttribute="leading" secondItem="9zF-sd-Mam" secondAttribute="leading" id="Vp2-fP-0m0"/>
                             <constraint firstItem="EYg-Xp-nCe" firstAttribute="top" secondItem="9zF-sd-Mam" secondAttribute="top" id="dUV-95-7Ty"/>
