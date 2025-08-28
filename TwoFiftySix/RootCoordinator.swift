@@ -10,6 +10,9 @@ protocol RootCoordinatorType: AnyObject {
     /// Show the stats screen.
     func showStats()
 
+    /// Dismiss presented view controller.
+    func dismiss()
+
     /// Deal with the fact that the app is entering the background.
     func enteringBackground()
 }
@@ -37,17 +40,25 @@ final class RootCoordinator: RootCoordinatorType {
         window.rootViewController = viewController
         self.rootViewController = viewController
         processor.coordinator = self
-        window.backgroundColor = .white
     }
 
     func showStats() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let viewController = storyboard.instantiateViewController(
+            withIdentifier: "stats"
+        ) as? StatsViewController else {
+            return
+        }
         let processor = StatsProcessor()
-        let viewController = StatsViewController(nibName: nil, bundle: nil)
         viewController.processor = processor
         processor.presenter = viewController
         self.statsProcessor = processor
         processor.coordinator = self
         self.rootViewController?.present(viewController, animated: unlessTesting(true))
+    }
+
+    func dismiss() {
+        self.rootViewController?.dismiss(animated: unlessTesting(true))
     }
 
     func enteringBackground() {

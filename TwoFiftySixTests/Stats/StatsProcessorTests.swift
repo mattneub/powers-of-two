@@ -23,4 +23,10 @@ struct StatsProcessorTests {
         #expect(subject.state.histogram == [.init(score: 1, count: 2), .init(score: 2, count: 2)])
         #expect(presenter.statesPresented.first?.histogram == [.init(score: 1, count: 2), .init(score: 2, count: 2)])
     }
+
+    @Test("receive done: calls coordinator dismiss")
+    func receiveDone() async {
+        await subject.receive(.done)
+        #expect(coordinator.methodsCalled == ["dismiss()"])
+    }
 }

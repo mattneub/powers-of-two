@@ -16,7 +16,6 @@ struct RootCoordinatorTests {
         #expect(viewController.processor === processor)
         #expect(window.rootViewController === viewController)
         #expect(processor.coordinator === subject)
-        #expect(window.backgroundColor == .white)
     }
 
     @Test("showStats: creates and configures stats module, presents view controller")
@@ -32,6 +31,21 @@ struct RootCoordinatorTests {
         #expect(processor.presenter === viewController)
         #expect(viewController.processor === processor)
         #expect(processor.coordinator === subject)
+    }
+
+    @Test("dismiss: dismisses presented view controller")
+    func dismiss() async throws {
+        let rootViewController = UIViewController()
+        makeWindow(viewController: rootViewController)
+        let subject = RootCoordinator()
+        subject.rootViewController = rootViewController
+        let presentedViewController = UIViewController()
+        rootViewController.present(presentedViewController, animated: false)
+        await #while(rootViewController.presentedViewController == nil)
+        #expect(rootViewController.presentedViewController === presentedViewController)
+        subject.dismiss() // this is the test
+        await #while(rootViewController.presentedViewController != nil)
+        #expect(rootViewController.presentedViewController == nil)
     }
 
     @Test("enteringBackground: sends enteringBackground to game processor")

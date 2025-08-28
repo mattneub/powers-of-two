@@ -14,6 +14,10 @@ final class MockRootCoordinator: RootCoordinatorType {
         methodsCalled.append(#function)
     }
 
+    func dismiss() {
+        methodsCalled.append(#function)
+    }
+
     func enteringBackground() {
         methodsCalled.append(#function)
     }
