@@ -1,0 +1,1 @@
+A clone of [2048 by Gabriele Cirulli](https://github.com/gabrielecirulli/2048), created in 2014 and still [available on the App Store](https://itunes.apple.com/us/app/2048-by-gabriele-cirulli/id868076805). My goal was to write a version without any of the “extras” that have accumulated over the years: no ads, no score, no undo, no power-ups, and completely free and open source.
