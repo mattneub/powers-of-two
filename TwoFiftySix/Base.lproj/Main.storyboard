@@ -24,9 +24,9 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mvt-rD-gWW">
-                                <rect key="frame" x="150.33333333333334" y="464" width="113.66666666666666" height="38"/>
+                                <rect key="frame" x="146.66666666666666" y="464" width="120.66666666666666" height="38"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Start Over">
+                                <buttonConfiguration key="configuration" style="filled" title="New Game">
                                     <fontDescription key="titleFontDescription" type="system" pointSize="20"/>
                                 </buttonConfiguration>
                                 <connections>
