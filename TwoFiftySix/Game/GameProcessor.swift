@@ -46,12 +46,25 @@ final class GameProcessor: Processor {
             coordinator?.showStats()
         case .userMoved(let direction):
             let assessment = grid.userMoved(direction: direction.moveDirection)
-            await presenter?.receive(.perform(assessment: assessment))
-            await presentHighestValue() // after `perform`, so merges have visibly happened
-            if !assessment.moves.isEmpty || !assessment.merges.isEmpty {
-                if let tile = grid.insertRandomTile() {
-                    await presenter?.receive(.add([tile]))
+            // We want the `await` here to be as short as possible, so that the serializer
+            // doesn't fall too far behind the user's gestures. So we combine the two
+            // aspects of the board animation into a single task group — and we move the
+            // presentation of the highest value out of the `await` altogether.
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask {
+                    await self.presenter?.receive(.perform(assessment: assessment))
                 }
+                group.addTask {
+                    if !assessment.moves.isEmpty || !assessment.merges.isEmpty {
+                        if let tile = await self.grid.insertRandomTile() {
+                            await self.presenter?.receive(.add([tile]))
+                        }
+                    }
+                }
+                for await _ in group {}
+            }
+            Task {
+                await presentHighestValue()
             }
         }
     }

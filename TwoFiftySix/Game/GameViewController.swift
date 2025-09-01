@@ -6,6 +6,9 @@ final class GameViewController: UIViewController, ReceiverPresenter {
     /// Reference to the processor, set by the coordinator at module creation time.
     weak var processor: (any Processor<GameAction, GameState, GameEffect>)?
 
+    /// Serializer that serializes user swipe actions.
+    lazy var serializer: any SerializerType<UISwipeGestureRecognizer.Direction> = Serializer()
+
     @IBOutlet var board: UIView!
 
     @IBOutlet var highest: UILabel!
@@ -13,7 +16,7 @@ final class GameViewController: UIViewController, ReceiverPresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
         highest.text = " "
-        // prepare to respond to swipe gestures
+        // Prepare to respond to swipe gestures.
         do {
             let g = MySwipeGestureRecognizer(target: self, action: #selector(swipe))
             g.direction = .up
@@ -33,6 +36,13 @@ final class GameViewController: UIViewController, ReceiverPresenter {
             let g = MySwipeGestureRecognizer(target: self, action: #selector(swipe))
             g.direction = .right
             view.addGestureRecognizer(g)
+        }
+        // Start the serializer and configure its task to send `.userMoved`
+        // to the processor.
+        Task {
+            await serializer.startStream { @MainActor [weak self] direction in
+                await self?.processor?.receive(.userMoved(direction: direction))
+            }
         }
     }
 
@@ -60,10 +70,11 @@ final class GameViewController: UIViewController, ReceiverPresenter {
         }
     }
 
-    /// The user performed a swipe gesture, which constitutes a move.
+    /// The user performed a swipe gesture, which constitutes a move. Pass it on to the
+    /// serializer, which in turn will send it on to the processor.
     @objc func swipe(_ g: UISwipeGestureRecognizer) {
         Task {
-            await processor?.receive(.userMoved(direction: g.direction))
+            await serializer.vend(g.direction)
         }
     }
 

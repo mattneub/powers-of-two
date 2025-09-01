@@ -9,11 +9,13 @@ struct GameViewControllerTests {
     let processor = MockProcessor<GameAction, GameState, GameEffect>()
     let board = MockBoard()
     let highest = UILabel()
+    let serializer = MockSerializer<UISwipeGestureRecognizer.Direction>()
 
     init() {
         subject.processor = processor
         subject.board = board
         subject.highest = highest
+        subject.serializer = serializer
         highest.text = "hello"
     }
 
@@ -30,6 +32,15 @@ struct GameViewControllerTests {
         #expect(recognizers.allSatisfy { ($0 as! MySwipeGestureRecognizer).target === subject })
         #expect(recognizers.allSatisfy { ($0 as! MySwipeGestureRecognizer).action == #selector(subject.swipe) })
         #expect(highest.text == " ")
+    }
+
+    @Test("viewDidLoad: configures the serializer")
+    func viewDidLoadSerializer() async {
+        subject.loadViewIfNeeded()
+        await #while(await serializer.methodsCalled.isEmpty)
+        #expect(await serializer.methodsCalled.first == "startStream(_:)")
+        try? await serializer.handler?(.left)
+        #expect(processor.thingsReceived.first == .userMoved(direction: .left))
     }
 
     @Test("layoutSubviews: sends processor initialInterface first time only")
@@ -65,13 +76,14 @@ struct GameViewControllerTests {
         #expect(board.thingsReceived == [.empty, .perform(assessment: Assessment(moves: [], merges: [])), .add([tileReducer])])
     }
 
-    @Test("swipe: calls userMoved with the given direction")
+    @Test("swipe: sends the swipe direction to the serializer's `vend`")
     func swipe() async {
         let recognizer = UISwipeGestureRecognizer()
         recognizer.direction = .right
         subject.swipe(recognizer)
-        await #while(processor.thingsReceived.isEmpty)
-        #expect(processor.thingsReceived.first == .userMoved(direction: .right))
+        await #while(await serializer.value == nil)
+        #expect(await serializer.methodsCalled.first == "vend(_:)")
+        #expect(await serializer.value == .right)
     }
 
     @Test("doNew: calls newGame")

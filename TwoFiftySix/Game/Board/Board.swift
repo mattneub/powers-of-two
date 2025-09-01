@@ -115,7 +115,7 @@ final class Board: UIView, Receiver {
             addSubview(tileView)
             newTileViews.append(tileView)
         }
-        await UIView.animateAsync(withDuration: unlessTesting(0.1), delay: 0, options: []) {
+        await UIView.animateAsync(withDuration: unlessTesting(0.1), delay: unlessTesting(0.1), options: []) {
             for tileView in newTileViews {
                 tileView.transform = .identity
             }
