@@ -27,6 +27,8 @@ final class GameProcessor: Processor {
                 await presenter?.receive(.add([tile1, tile2]))
             }
             await presentHighestValue()
+        case .help:
+            coordinator?.showHelp()
         case .newGame:
             // Only when the user starts a new game, and only when the highest tile value in the
             // grid is larger than 64, we append that value to the saved list of high scores

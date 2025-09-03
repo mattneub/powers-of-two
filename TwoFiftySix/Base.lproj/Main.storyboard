@@ -39,6 +39,9 @@
                                 <buttonConfiguration key="configuration" style="filled" title="Help">
                                     <fontDescription key="titleFontDescription" type="system" pointSize="20"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="doHelp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ii0-hJ-gsz"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="USy-OH-WKD">
                                 <rect key="frame" x="20.000000000000004" y="28.666666666666671" width="55.333333333333343" height="23.333333333333329"/>
@@ -145,6 +148,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4S8-Pq-V7j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="944" y="-13"/>
+        </scene>
+        <!--Help View Controller-->
+        <scene sceneID="PeN-p7-gRQ">
+            <objects>
+                <viewController storyboardIdentifier="help" id="KrB-M3-hRe" customClass="HelpViewController" customModule="TwoFiftySix" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qSW-Jg-QPh">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="JNe-nW-ETb"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c2J-nQ-b84" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1730" y="-13"/>
         </scene>
     </scenes>
     <resources>

@@ -10,6 +10,9 @@ protocol RootCoordinatorType: AnyObject {
     /// Show the stats screen.
     func showStats()
 
+    /// Show the help screen.
+    func showHelp()
+
     /// Dismiss presented view controller.
     func dismiss()
 
@@ -21,6 +24,7 @@ protocol RootCoordinatorType: AnyObject {
 final class RootCoordinator: RootCoordinatorType {
     var gameProcessor: (any Processor<GameAction, GameState, GameEffect>)?
     var statsProcessor: (any Processor<StatsAction, StatsState, Void>)?
+    var helpProcessor: (any Processor<HelpAction, HelpState, Void>)?
 
     /// Reference to the root view controller of the app.
     weak var rootViewController: UIViewController?
@@ -40,6 +44,22 @@ final class RootCoordinator: RootCoordinatorType {
         window.rootViewController = viewController
         self.rootViewController = viewController
         processor.coordinator = self
+    }
+
+    func showHelp() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let viewController = storyboard.instantiateViewController(
+            withIdentifier: "help"
+        ) as? HelpViewController else {
+            return
+        }
+        let processor = HelpProcessor()
+        viewController.processor = processor
+        processor.presenter = viewController
+        self.helpProcessor = processor
+        processor.coordinator = self
+        let navigationController = UINavigationController(rootViewController: viewController)
+        self.rootViewController?.present(navigationController, animated: unlessTesting(true))
     }
 
     func showStats() {

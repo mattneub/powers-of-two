@@ -6,5 +6,6 @@ enum GameAction: Equatable {
     case initialInterface
     case newGame
     case stats
+    case help
     case userMoved(direction: UISwipeGestureRecognizer.Direction)
 }

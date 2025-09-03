@@ -49,6 +49,9 @@
 			exceptions = (
 				3FE514EE2E47C5520082C44E /* Exceptions for "TwoFiftySix" folder in "TwoFiftySix" target */,
 			);
+			explicitFolders = (
+				Help/helppix,
+			);
 			path = TwoFiftySix;
 			sourceTree = "<group>";
 		};

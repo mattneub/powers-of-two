@@ -92,5 +92,11 @@ final class GameViewController: UIViewController, ReceiverPresenter {
         }
     }
 
+    /// The user tapped the Help button.
+    @IBAction func doHelp(_ sender: Any) {
+        Task {
+            await processor?.receive(.help)
+        }
+    }
 }
 
