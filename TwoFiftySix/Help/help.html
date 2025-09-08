@@ -1,22 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<meta charset="utf-8" />
 	<style>
 	body
 	{
 		font-family: Georgia;
-		font-size: 20pt;
+		font-size: 14pt;
+		margin-left: 10pt;
+		margin-right: 10pt;
+	}
+	li + li
+	{
+		margin-top: 12pt;
+	}
+	.ss {
+		text-align: center;
+	}
+	.ss img {
+		display: inline-block;
+		max-width: min(10cm, 80%);
+	}
+	.fig {
+		text-align: left;
+		margin-left: 30pt;
+	}
+	.fig img {
+		display: inline-block;
+		max-width: 6cm;
 	}
 	</style>
 </head>
 <body>
 <p>
-<b>Powers of Two</b> is a clone of <a href="https://github.com/gabrielecirulli/2048">2048 by Gabriele Cirulli</a>, created in 2014 and still <a href="https://itunes.apple.com/us/app/2048-by-gabriele-cirulli/id868076805">available on the App Store</a>. My goal was to write a version without any of the “extras” that have accumulated over the years: no ads, no score, no undo, no sound effects, no power-ups, and completely free and open source.
+<b>Powers of Two</b> is an implementation of <a href="https://github.com/gabrielecirulli/2048">2048 by Gabriele Cirulli</a>, created in 2014 and still <a href="https://itunes.apple.com/us/app/2048-by-gabriele-cirulli/id868076805">available on the App Store</a>. My goal was to write a simplified version, eliminating the “extras” that have accumulated over the years: no ads, no score, no undo, no sound effects, no power-ups, and completely free and <a href="https://github.com/mattneub/powers-of-two">open source</a>.
 </p>
+
 <h2>How to Play</h2>
 <p>
-You are shown a 4x4 game board, with slots for 16 tiles. Every tile displays a numeric value, which is a power of 2: that is, 2, or 4, or 8, and so on. The game begins by randomly producing two tiles, whose values are probably both 2 but possibly 4.
+You are shown a 4x4 game board, with slots for 16 tiles. A slot either contains one tile or is empty. Every tile displays a numeric value, which is a power of 2: it can be 2, or 4, or 8, or 16, and so on. The game begins by randomly producing two tiles, whose values are each <b>probably 2 but possibly 4</b>.
 </p>
 <p>
 You make a move by <b>swiping</b> in one of the four cardinal directions: <b>up, down, left, or right</b>. You don’t have to swipe on the game board; you can swipe anywhere on the screen.
@@ -26,119 +49,178 @@ The game board responds to your move in the following way:
 </p>
 <ol>
 	<li>
-	<b>All</b> the tiles on the board slide as far as possible in the direction that you swiped.
+	<b>All</b> the tiles on the board, within their respective row or column, slide <b>as far as possible</b> in the direction that you swiped.
 	</li>
 	<li>
-	During this slide, any pairs of <b>adjacent tiles with the same values</b> (adjacent, that is, along the axis of your swipe direction) are <b>merged</b> into a single tile, whose value is the <b>sum</b> of the values of the original two tiles.
+	If two tiles are <b>adjacent</b> along the axis of your swipe, and if they have <b>the same values</b> as one another, they are <b>merged</b> into a single tile, whose value is the <b>sum</b> of the values of the original two tiles.
 	</li>
 	<li>
-	The game then randomly produces <b>one</b> new tile, whose value is probably 2 but possibly 4. Now you can make another move.
+	The game then randomly produces <b>one</b> new tile, whose value is <b>probably 2 but possibly 4</b>. The move ends, and now you can make another move.
 	</li>
 </ol>
 <p>
-The game <b>ends</b> when you <i>cannot</i> make another move. This would be because all 16 slots are filled with tiles and there are no adjacent same-valued tiles in any swipe direction (so that no merges are possible). At that point, your only option is to tap the New Game button and start over. Alternatively, you can voluntarily tap the New Game button at any time.
+The more times a given tile gets another tile merged into it, the higher its value becomes. Successive merges on a single tile will produce a tile whose value is the next power of 2: two adjacent 2s become a single 4, two adjacent 4s become a single 8, two adjacent 8s become a single 16, and so on.
 </p>
 <p>
-The <b>object</b> of the game revolves around the merges that can occur during a move. A moment’s thought will reveal that successive merges will produce a tile whose value is the next power of 2: two adjacent 2s become a single 4, two adjacent 4s become a single 8, two adjacent 8s become a single 16, and so on. The goal is to get this number, the value of the <b>highest-numbered tile on the board</b>, to be as high as possible.
+The <b>object</b> of the game is to get <i>one</i> tile, the <b>highest-numbered tile</b> on the board, to be as <b>high as possible:</b>
 </p>
 <ul>
 	<li><b>512</b> is considered very good.</li>
 	<li><b>1024</b> is considered excellent.</li>
-	<li><b>2048</b> is considered the best; if you reach it, you have won the game (hence its original name, “2048”). If you reach 2048, you are welcome to play on, but it is extremely unlikely that you would reach a higher tile value, so you should just pat yourself on the back and tap the New Game button.</li>
+	<li><b>2048</b> is considered the best; if you reach it, you have effectively won the game (hence the game’s original name, “2048”).</li>
 </ul>
-<h3>Fine Points</h3>
 <p>
-During a move, the force of gravity (in the direction of the move) and the power of merging (in the direction of the move) operate simultaneously. For example, a row or column might contain 2, empty, 2, empty; the two 2s are brought together and merged all in one moment, resulting in a single 4 and three empty slots.
+The game <b>ends</b> when you tap the New Game button.
 </p>
+<ul>
+<li>This might be because you have reached the 2048 tile. Congratulations, you have <b>won!</b> If you do reach 2048, you are welcome to play on, but it is extremely unlikely that you would reach a higher tile value, so you should probably just pat yourself on the back and tap the New Game button.
+</li>
+<li>
+Alternatively, this might be because you <i>cannot</i> make another move. This would be because all 16 slots are filled with tiles, and there are <i>no</i> adjacent same-valued tiles in <i>any</i> swipe direction, so that no merges are possible. At that point, you are <b>stuck</b>; your only option is to tap the New Game button.
+</li>
+</ul>
+
+<h2>Fine Points</h2>
 <p>
-If a single row or column consists of two adjacent same-valued pairs along the direction of your move (for example: 2, 2, 4, 4), both pairs are merged (and the two merged tiles end up next to each other).
+In this section, I’ll just clarify in detail the mechanics of how the game works.
 </p>
-<p>
-If a single row or column contains three adjacent same-valued tiles along the direction of your move (for example: 2, 2, 2), the two tiles furthest in the direction of the move are merged.
-</p>
-<p>
-A tile created by merging during a move cannot be merged again during that move. For example, adjacent tiles 2, 2, 4 in the direction of the move will result in 4, 4; the two 4s are not merged into an 8 on the same move. Of course, you can then move again in the same direction if you wish to merge the new adjacent pair.
-</p>
-<p>
-The hand-waving phrase describing how the game produces new tiles, “probably 2 but possibly 4,” has a well-defined meaning. A new tile is placed into an empty slot completely at random, and its value is randomly 2 or 4 with 2 appearing (on average) nine times out of ten.
-</p>
-<p>
-If you try to move in a certain direction but no move in that direction is possible — all tiles are already positioned as far as possible in that direction, and there are no adjacent same-valued tiles to merge along that axis — then your gesture is considered null and void. There is no move, and no new tile is produced.
-</p>
+<ul>
+<li>
+During a move, the force of gravity and the power of merging operate <b>simultaneously</b> along the axis of your swipe. For example: a row or column (along the axis of your swipe) might contain <b>2, empty, 2, empty</b>; in that case, the two 2s are brought together and merged all in one moment, resulting in <b>4, empty, empty, empty</b>.
+</li>
+</ul>
+<div class="fig">
+<img alt="Screenshot" src="helppix/figure1.jpg">
+</div>
+<ul>
+<li>
+If a single row or column consists of <b>two</b> adjacent same-valued <b>pairs</b> (along the axis of your swipe), <b>both</b> pairs are merged (and the two merged tiles end up next to each other). For example: <b>2, 2, 4, 4</b> becomes <b>4, 8, empty, empty</b>.
+</li>
+</ul>
+<div class="fig">
+<img alt="Screenshot" src="helppix/figure2.jpg">
+</div>
+<ul>
+<li>
+If a single row or column contains <b>three</b> same-valued <b>tiles</b> (along the axis of your swipe), so that they all end up adjacent, the two tiles <b>furthest</b> in the direction of your swipe are merged. For example: <b>2, 2, 2, empty</b> becomes <b>4, 2, empty, empty</b>.
+</li>
+</ul>
+<div class="fig">
+<img alt="Screenshot" src="helppix/figure3.jpg">
+</div>
+<ul>
+<li>
+The same tile cannot undergo two merges during a single move. For example: <b>2, 2, 2, 2</b> (along the axis of your swipe) will result in <b>4, 4, empty, empty</b>; the two 4s resulting from merging and made adjacent by your move are <i>not</i> merged into an 8 on the same move. Of course, you can then swipe again along the same axis if you wish to merge the new pair.
+</li>
+</ul>
+<div class="fig">
+<img alt="Screenshot" src="helppix/figure4.jpg">
+</div>
+<ul>
+<li>
+The hand-waving phrase describing how the game produces a new tile whose value is “probably 2 but possibly 4” has a well-defined meaning: A new tile is placed completely at random into any of the slots that are empty after your move, and its value is randomly 2 or 4, where on average <b>2 appears nine times out of ten</b>.
+</li>
+<li>
+If you swipe in a certain direction but <b>no move in that direction is possible</b> — because all tiles are already positioned as far as possible in that direction, and there are no adjacent same-valued tiles to merge along that axis — then your swipe gesture is considered null and void. There is <b>no move</b>, and <b>no new tile</b> is produced.
+</li>
+</ul>
+
 <h2>How to Win</h2>
 <p>
-The first thing to understand about this game is that you are in a race against the perpetual production of new tiles. The board is trying to fill the board with tiles; you are trying to keep slots open by creating new empty slots. Every merge creates a new empty slot.
+You are in a race against the game board’s inexorable production of new tiles. The board is trying to fill up with tiles; you are trying to create empty slots, which you do by performing merges.
 </p>
 <p>
-Moreover, the more empty slots there are, the more random will be the placement of each new tile. To put it the other way round, if at the end of your move there is just one empty slot, the new tile will with 100% certainty appear in that slot, and the only thing in doubt is whether it will be a 2 or a 4. And at that point, if no merge is possible in any direction, the game is over; the board is full and you are stuck.
+Empty slots represent degrees of freedom. The more empty slots there are, the more random will be the placement of each new tile, and so the more likely it is that when the board produces a new tile, it will be good for you — a useful value in a useful place — and not bad for you.
 </p>
 <p>
-So you can think of empty slots as degrees of freedom. The more of them there are, the more likely it is that when the board produces a new tile, it will be good for you — a useful value in a useful place — and not bad for you.
+Conversely, imagine letting the board become so crowded with tiles that at the end of your move there is just one empty slot. In that case, there are basically no degrees of freedom at all: the new tile will with 100% certainty appear in that slot, and the only thing in doubt is whether it will be a 2 or a 4. And at <i>that</i> point, if no merge is possible in any direction, the game is over; the board is full and you are stuck.
 </p>
 <p>
-On the other hand, if there are too many empty slots, it will be too difficult to create an adjacent pair that you can merge. If you have a 512 tile and a few 2s and an otherwise empty board, then on every move you make, every tile including the 512 runs the risk of moving, and so the probability that you will make <i>another</i> 512 tile adjacent to the first one, so that you can merge them to get 1024, is not high.
+At the same time, you are also trying to make high-valued tiles — in particular, <i>one</i> high-valued tile that represents the game’s result. Your goal is to merge pairs of high-valued tiles to make an even higher-valued tile. You want to maintain enough high-valued tiles to be useful to that end.
 </p>
 <p>
-Moreover, remember that the only values of new tiles that the board will produce are 2s and 4s, predominantly 2s. It is easy to merge two 2s to get a 4 and two 4s to get an 8, but as the numbers get higher, making two adjacent tiles with the same value gets harder. It’s pretty easy to get from 2 to 16 or 32, but it’s a long way from 2 to 512.
+On the other hand, you do not want to maintain so many high-valued tiles as to occupy too much space. High-valued tiles reduce the number of empty slots — which, as already stated, represent degrees of freedom. Moreover, high-valued tiles are not useful in the short term, because the board is going to produce only 2s and 4s, which cannot immediately be merged with any higher-valued tile.
 </p>
 <p>
-The solution to these problems is to make a <b>chain</b> — that is, an arrangement of tiles such that each adjacent tile is the previous power of 2. For example, here’s an actual position from a recent game of mine:
+In addition, it becomes harder to merge a tile as its value gets higher — because it is harder to make <i>another</i> tile of the same value. Again, the heart of the problem is that the board is going to produce only 2s and 4s. From there it is easy to make an 8, and since two 8s are pretty easy to make, it is pretty easy to merge them into a 16. But a 64, say, is noticeably more difficult to merge, because to do so, you need two of them, and they need to be adjacent, and your raw material is just 2s and 4s, which must be combined from the bottom up, as it were, to obtain another 64.
 </p>
-<div style="text-align: center;">
-<img style="display: inline-block; width: 25%; height: 25%;" alt="Screenshot" src="helppix/IMG_2297.PNG">
+<p>It would be a lot easier, though, to make that second 64 if you happened already to have a nearby 32 lying around — because it is easier to combine 2s and 4s to make another 32 than to combine 2s and 4s to make a 64 from scratch. And it would be a lot easier to make that second 32 if you happened already to have a nearby 16 lying around, for the same reason. And so on.
+</p>
+<p>
+The preceding observation points the way to an optimal balance between your conflicting desires: You should try to accumulate your high-valued tiles in the form of a <b>chain</b>, where each adjacent tile is the previous power of 2. That way, your high-valued tiles are occupying space, which is bad, but if you can just form a new tile matching the <i>lowest</i> value at one end of the chain, you will be able to <b>merge successively</b> all the way up the chain and double the <i>highest</i> value at the <i>other</i> end of the chain. This is called <b>collapsing</b> the chain.
+<p>
+For example, here’s an actual position from a recent game of mine:
+</p>
+<div class="ss">
+<img alt="Screenshot" src="helppix/IMG_2297.PNG">
 </div>
 <p>
-In the above screenshot, I’ve reached a high tile of 512. There are three things to notice:
+In the above screenshot, I’ve reached a high tile of 512. Here are some things to notice:
 </p>
 <ol>
-	<li>The 512 is in the <b>corner</b>. This is good because it means that I can swipe down or left and the 512 will not move; plus, it gives the entire rest of the bottom row to form the chain.</li>
-	<li>The entire bottom row is <b>filled</b> with tiles. This good because it means that I can swipe not only down or left but even right, and the 512 will still not move. In fact, none of the tiles in the bottom row will move, unless I am compelled by bad luck or stupidity to swipe up; that would be a disaster as it would probably mess everything up.</li>
-	<li>The bottom row is a <b>chain</b>.</li>
+	<li>The bottom row is a <b>chain</b> of accumulated high-value tiles. Contrast this with all the other tiles, which are evidently the detritus of the board’s inexorable tendency to create 2s.</li>
+	<li>The chain <b>fills the bottom row.</b> This is not coincidence. I formed the chain this way on purpose, because it means that I can make the maximum number of types of move without disturbing the chain: I can swipe <i>left or right</i> without disturbing the chain, because the chain <i>fills</i> the bottom row (and no tile in the chain can be merged with its sideways neighbor), and I can swipe <i>down</i> without disturbing the chain, because the chain fills the <i>bottom</i> row. In fact, none of the tiles in the bottom row will move, unless I am compelled by bad luck or stupidity to swipe <i>up;</i> that would likely be a disaster.</li>
+	<li>The 512, the high tile, is in the <b>corner</b>. This means that the chain can be a full four tiles long — it fills the bottom row — and thus is so long that the tile at the <i>low</i> end of the chain, the 64, is vastly easier to match and merge than the tile at the high end. The longer the chain, the easier it will be make a new low-end tile that matches it, and so collapse the chain and double the high tile.</li>
 </ol>
 <p>
-The existence of the chain means that if I can somehow make another 64 tile appear where the second 4 tile is now, I can make a <b>series of merges</b>: swipe down to merge the two 64s into a 128 (where the 64 is now), then swipe left to merge the two 128s into a 256 (where the 128 is now), then swipe left to merge the two 256s into 512 (where the 256 is now), then swipe left to merge the two 512s into a 1024.
+This notion of <b>collapsing</b> the chain lies at the heart of the chain’s purpose. Clearly, in the position shown in the preceding screenshot, if I can somehow make <i>another</i> 64 tile appear where the second 4 tile is now, I can make a <b>series of merges</b>: swipe down to merge the two 64s into a 128 (where the 64 is now), then swipe left to merge the two 128s into a 256 (where the 128 is now), then swipe left to merge the two 256s into 512 (where the 256 is now), then swipe left to merge the two 512s into a 1024.
 </p>
 <p>
-Now, you might say: well, making a 64 tile is not easy either. One solution is to continue the chain. This is the same game, after some more time has passed:
+(Obviously, while I’m spending four moves collapsing the chain, the board will be generating four new tiles. But that’s not bad; it’s good! Those four new tiles cannot possibly interfere with the chain, because the chain’s tiles are immobile and adjacent. And the new tiles will all be 2s and 4s, which will help me get started working my way up to form new high tiles.)
 </p>
-<div style="text-align: center;">
-<img style="display: inline-block; width: 25%; height: 25%;" alt="Screenshot" src="helppix/IMG_2298.PNG">
+<p>
+Well, making a 64 tile is not easy, but it’s not terribly difficult either. One approach is simply to continue the chain. That way, I don’t actually need to make a second 64; I just need two 32s, which are even easier to make. And I don’t actually need a second 32; I just need two 16s, which are even <i>easier</i> to make! And so on.
+</p>
+<p>
+So that’s just what I’ll do. This is the same game, after some more time has passed:
+</p>
+<div class="ss">
+<img alt="Screenshot" src="helppix/IMG_2298.PNG">
 </div>
 <p>
-As you can see, I’ve continued the chain, running the other way in the third row. I’ve managed to make two 8 tiles at the start of the third row, and now I can make a sequence of merges all the way from the two 8 tiles to the 512 tile: swipe right, right, right, down, left, left, left. When I’ve done that, all the tiles in the chain will be gone, and the 512 tile will have turned into 1024 tile:
+As you can see, I’ve continued the chain, running the other way in the third row. I’ve managed to make two 8 tiles at the start of the third row, and I’m ready to collapse the chain! To do so, I make a sequence of merges all the way from the two 8 tiles to the 512 tile: swipe right, right, right, down, left, left, left:
 </p>
-<div style="text-align: center;">
-<img style="display: inline-block; width: 25%; height: 25%;" alt="Screenshot" src="helppix/IMG_2299.PNG">
+<div class="ss">
+<img alt="Screenshot" src="helppix/IMG_2298b.jpg">
 </div>
 <p>
-Having reached 1024, you might proceed to reach 2048. This is harder to do, and takes quite a bit of time.
+When I’ve done that, all the tiles in the chain are gone, and the 512 tile has turned into a 1024 tile:
 </p>
-<p>
-In the first place, you’ve got more and larger tiles to form in order to make the chain. For example, the first thing you want to do now is to form a 512 tile; and this is going to take you just as long as took you to form the _first_ 512 tile, the one in the first screenshot above. And you’re probably going to do it by forming a chain, which you will then collapse by merges — after which, you’ll have to form another chain in order to make a 256 tile. Similar to the famous Tower of Hanoi puzzle, you keep having to “start over” in order to make each successive tile.
-</p>
-<p>
-The other problem is that your new chain is going to occupy more room in the board. Assuming you can get the initial tiles into the bottom row, the bottom row will consist of 1024, 512, 256, 128. The 64 will then have to go above the 128, and you’re going to have to work the other way across the third row. Meanwhile, all this time, you’re trying not to mess up your existing chain and trying not to run out of moves.
-</p>
-<p>
-All of this takes some care — and quite a bit of luck. The trouble ultimately is that every time the board produces a new tile, you don’t know where it will be and whether it will be a 2 or a 4. The board can thus seriously mess you up at any time.
-</p>
-<p>
-As an example, here’s what actually happened in the same game I’ve been using as an illustration:
-</p>
-<div style="text-align: center;">
-<img style="display: inline-block; width: 25%; height: 25%;" alt="Screenshot" src="helppix/IMG_2300.PNG">
+<div class="ss">
+<img alt="Screenshot" src="helppix/IMG_2299.PNG">
 </div>
 <p>
-As you can see, things didn’t go entirely according to plan. The fourth row got messed up by a tile in the lower right corner that I couldn’t get rid of (currently a 64), so I had to “turn the corner” on my chain one slot earlier than I wanted to. Things really started piling up on the left side of the board. Nevertheless, as you can, by great good luck, I managed to finish the chain! I’ve got two adjacent 16s in the second row, and now I can make a series of swipes: left, down, right, right, down, left, left — and I reach 2048!
+Having reached 1024, you might proceed to attempt to reach 2048. This is time-consuming, and can prove more difficult than reaching 1024.
 </p>
-<div style="text-align: center;">
-<img style="display: inline-block; width: 25%; height: 25%;" alt="Screenshot" src="helppix/IMG_2301.PNG">
+<p>
+To reach 2048, you basically have to rebuild from scratch the entire chain culminating in 512 that you just destroyed by collapsing it to reach 1024 in the first place. This is a longer chain and therefore occupies more room than the previous chain, so you have that much less room in which to operate. Meanwhile at every moment things threaten to go wrong, and the stakes are that much higher when they do.
+</p>
+<p>
+On the other hand, even when things do go wrong and the board becomes somewhat disorderly, it still might be possible to rescue the situation long enough to reach 2048. My attitude is that I don’t really care <i>how</i> I reach 2048, because I won’t be trying to go any further.
+</p>
+<p>
+As an example, here’s what actually happened later in the same game I’ve been using as an illustration:
+</p>
+<div class="ss">
+<img alt="Screenshot" src="helppix/IMG_2300.PNG">
 </div>
 <p>
-So that’s my advice for winning the game. Try to make your largest tile in a corner (I like to use the lower left, although sometimes accidents have forced me to settle on a different corner), and occupy the entire edge with tiles so that you can keep your edge tiles where they are. If, as I do, you’re using the bottom edge (row) to hold your main tiles, try very very hard never to swipe up, which might dislodge your main tiles. Form a chain, collapse it to make the next power of 2, and start over.
+As you can see, things have become rather messy. I had gotten as far as making the 128 tile when I made a mistake and was forced to swipe up. I immediately swiped down again, but a tile created by the board at the bottom right had pushed my 128 tile up into the third row. Nevertheless, by tremendous good luck I managed to position the 128 tile above the 256 tile, and so I still had my chain, even though it turned the corner one column too early. But this meant also that things had become desperately crowded, and I was lucky to be able to finish the chain. Making those two 16s was a matter sheer luck; if one bad tile had been generated by the board, I would have ended up completely stuck.
 </p>
 <p>
-Above all, accept that there’s a major element of luck. At any moment, a tile produced by the board in a bad place can make the best-laid plans go badly awry. Sometimes you can compensate somehow; sometimes you can’t. But 2048 <i>is</i> achievable; if you’re diligent, you should, with practice and experience, be able to get there at least 1/4 of the time.
+However, I did manage to make the two 16s; and even though there is now only one empty slot remaining, this is a winning position, because I have a chain starting with the pair of 16s and winding all the way down to the 1024:
+</p>
+<div class="ss">
+<img alt="Screenshot" src="helppix/IMG_2300b.jpg">
+</div>
+<p>
+I collapse the chain, the 1024 becomes a 2048, and the game ends:
+</p>
+<div class="ss">
+<img alt="Screenshot" src="helppix/IMG_2301.PNG">
+</div>
+<p>
+The point is that 2048 <i>is</i> achievable; if you’re diligent, you should, with practice, patience, and experience, be able to get there in better than a quarter of your games — perhaps as much as half your games. But you shouldn’t expect to reach 2048 on <i>every</i> game, because there’s a major element of luck involved. At any moment, a tile produced by the board in a bad place can make the best-laid plans go badly awry. Sometimes you can compensate; sometimes you can’t. Have fun!
 </p>
 </body>
 </html>
