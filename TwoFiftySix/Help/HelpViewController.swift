@@ -7,6 +7,7 @@ final class HelpViewController: UIViewController, ReceiverPresenter {
     /// Reference to the processor, set by the coordinator at module creation time.
     weak var processor: (any Processor<HelpAction, HelpState, Void>)?
 
+    /// The web view that constitutes the bulk of our interface.
     var webView: WKWebView?
 
     override func viewDidLoad() {
@@ -24,16 +25,25 @@ final class HelpViewController: UIViewController, ReceiverPresenter {
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
-        guard let contentURL = Bundle.main.url(forResource: "help", withExtension: "html") else {
-            return
-        }
-        webView.loadFileURL(contentURL, allowingReadAccessTo: contentURL)
         webView.navigationDelegate = self
+        Task {
+            await processor?.receive(.initialInterface)
+        }
     }
+
+    /// Flag so we don't set the web view content twice.
+    var presentedInitialInterface = false
 
     func present(_ state: HelpState) async {
+        if !presentedInitialInterface {
+            if let url = state.contentURL {
+                presentedInitialInterface = true
+                webView?.loadFileURL(url, allowingReadAccessTo: url)
+            }
+        }
     }
 
+    /// Action of the done button.
     @objc func doDone(_ sender: Any) {
         Task {
             await processor?.receive(.done)
@@ -41,6 +51,7 @@ final class HelpViewController: UIViewController, ReceiverPresenter {
     }
 }
 
+/// Extension that routes external links to the default browser. No tests for this.
 extension HelpViewController: WKNavigationDelegate {
     func webView(
         _ webView: WKWebView,

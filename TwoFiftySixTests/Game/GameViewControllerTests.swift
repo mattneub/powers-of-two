@@ -99,6 +99,13 @@ struct GameViewControllerTests {
         await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived.first == .stats)
     }
+
+    @Test("doHelp: calls help")
+    func doHelp() async {
+        subject.doHelp(self)
+        await #while(processor.thingsReceived.isEmpty)
+        #expect(processor.thingsReceived.first == .help)
+    }
 }
 
 final class MockBoard: UIView, Receiver {

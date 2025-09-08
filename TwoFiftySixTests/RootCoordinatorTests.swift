@@ -33,6 +33,22 @@ struct RootCoordinatorTests {
         #expect(processor.coordinator === subject)
     }
 
+    @Test("showHelp: creates and configures help module, presents nav controller")
+    func showHelp() async throws {
+        let dummyViewController = UIViewController()
+        makeWindow(viewController: dummyViewController)
+        let subject = RootCoordinator()
+        subject.rootViewController = dummyViewController
+        subject.showHelp()
+        await #while(dummyViewController.presentedViewController == nil)
+        let navController = try #require(dummyViewController.presentedViewController as? UINavigationController)
+        let viewController = try #require(navController.viewControllers.first as? HelpViewController)
+        let processor = try #require(subject.helpProcessor as? HelpProcessor)
+        #expect(processor.presenter === viewController)
+        #expect(viewController.processor === processor)
+        #expect(processor.coordinator === subject)
+    }
+
     @Test("dismiss: dismisses presented view controller")
     func dismiss() async throws {
         let rootViewController = UIViewController()

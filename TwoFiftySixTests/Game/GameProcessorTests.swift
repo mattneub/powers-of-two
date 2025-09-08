@@ -82,6 +82,12 @@ struct GameProcessorTests {
         #expect(coordinator.methodsCalled == ["showStats()"])
     }
 
+    @Test("receive help: calls coordinator showHelp")
+    func help() async {
+        await subject.receive(.help)
+        #expect(coordinator.methodsCalled == ["showHelp()"])
+    }
+
     @Test("receive userMoved(direction:): calls grid userMoved with direction, passes assessment to presenter perform")
     func userMoved() async {
         let assessment = Assessment(

@@ -15,6 +15,12 @@ final class HelpProcessor: Processor {
         switch action {
         case .done:
             coordinator?.dismiss()
+        case .initialInterface:
+            guard let contentURL = services.bundle.url(forResource: "help", withExtension: "html") else {
+                return
+            }
+            state.contentURL = contentURL
+            await presenter?.present(state)
         }
     }
 }
