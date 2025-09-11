@@ -4,7 +4,6 @@ import WebKit
 import Testing
 import WaitWhile
 
-@MainActor
 struct HelpViewControllerTests {
     let subject = HelpViewController()
     let processor = MockProcessor<HelpAction, HelpState, Void>()
@@ -23,7 +22,7 @@ struct HelpViewControllerTests {
         let webView = try #require(subject.webView)
         #expect(webView.superview === subject.view)
         #expect(webView.navigationDelegate === subject)
-        await #while(processor.thingsReceived.isEmpty)
+        // await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived.first == .initialInterface)
     }
 
@@ -43,7 +42,7 @@ struct HelpViewControllerTests {
     @Test("doDone: calls done")
     func doDone() async {
         subject.doDone(self)
-        await #while(processor.thingsReceived.isEmpty)
+        // await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived.first == .done)
     }
 

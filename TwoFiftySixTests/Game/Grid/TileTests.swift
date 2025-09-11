@@ -2,7 +2,6 @@
 import Foundation
 import Testing
 
-@MainActor
 struct TileTests {
     @Test("Initializer from tile reducer works as expected")
     func initializeReducer() {

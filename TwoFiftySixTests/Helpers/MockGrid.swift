@@ -1,6 +1,6 @@
 @testable import TwoFiftySix
 
-final class MockGrid: GridType {
+final class MockGrid: GridType, @unchecked Sendable {
     var methodsCalled = [String]()
     var tiles: [TileReducer] = [TileReducer]()
     var highestValue = 2

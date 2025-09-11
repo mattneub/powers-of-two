@@ -3,7 +3,6 @@ import UIKit
 import Testing
 import SnapshotTesting
 
-@MainActor
 struct HistogramEntryContainerViewTests {
     let subject = HistogramEntryContainerView(frame: CGRect(origin: .zero, size: .init(width: 400, height: 100)))
 

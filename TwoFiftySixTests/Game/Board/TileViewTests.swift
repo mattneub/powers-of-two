@@ -3,7 +3,6 @@ import UIKit
 import Testing
 import SnapshotTesting
 
-@MainActor
 struct TileViewTests {
     @Test("init: making a tile view sets up the view as expected")
     func initialize() async {

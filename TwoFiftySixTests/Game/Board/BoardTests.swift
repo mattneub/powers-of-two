@@ -3,7 +3,6 @@ import UIKit
 import Testing
 import SnapshotTesting
 
-@MainActor
 struct BoardTests {
     let subject = Board(frame: .zero)
 

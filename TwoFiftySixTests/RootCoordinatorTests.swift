@@ -3,11 +3,10 @@ import UIKit
 import Testing
 import WaitWhile
 
-@MainActor
 struct RootCoordinatorTests {
     @Test("createInitialInterface: creates and configures game module, sets up initial interface")
     func createInitialInterface() throws {
-        let window = UIWindow()
+        let window = makeWindow()
         let subject = RootCoordinator()
         subject.createInitialInterface(window: window)
         let processor = try #require(subject.gameProcessor as? GameProcessor)
@@ -25,7 +24,7 @@ struct RootCoordinatorTests {
         let subject = RootCoordinator()
         subject.rootViewController = dummyViewController
         subject.showStats()
-        await #while(dummyViewController.presentedViewController == nil)
+        // await #while(dummyViewController.presentedViewController == nil)
         let viewController = try #require(dummyViewController.presentedViewController as? StatsViewController)
         let processor = try #require(subject.statsProcessor as? StatsProcessor)
         #expect(processor.presenter === viewController)
@@ -40,7 +39,7 @@ struct RootCoordinatorTests {
         let subject = RootCoordinator()
         subject.rootViewController = dummyViewController
         subject.showHelp()
-        await #while(dummyViewController.presentedViewController == nil)
+        // await #while(dummyViewController.presentedViewController == nil)
         let navController = try #require(dummyViewController.presentedViewController as? UINavigationController)
         let viewController = try #require(navController.viewControllers.first as? HelpViewController)
         let processor = try #require(subject.helpProcessor as? HelpProcessor)
@@ -57,10 +56,10 @@ struct RootCoordinatorTests {
         subject.rootViewController = rootViewController
         let presentedViewController = UIViewController()
         rootViewController.present(presentedViewController, animated: false)
-        await #while(rootViewController.presentedViewController == nil)
+        // await #while(rootViewController.presentedViewController == nil)
         #expect(rootViewController.presentedViewController === presentedViewController)
         subject.dismiss() // this is the test
-        await #while(rootViewController.presentedViewController != nil)
+        // await #while(rootViewController.presentedViewController != nil)
         #expect(rootViewController.presentedViewController == nil)
     }
 
@@ -70,7 +69,7 @@ struct RootCoordinatorTests {
         let subject = RootCoordinator()
         subject.gameProcessor = processor
         subject.enteringBackground()
-        await #while(processor.thingsReceived.isEmpty)
+        // await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived.first == .enteringBackground)
     }
 }

@@ -2,7 +2,6 @@
 import UIKit
 import Testing
 
-@MainActor
 struct PersistenceTests {
     let subject = Persistence()
     let userDefaults = MockUserDefaults()

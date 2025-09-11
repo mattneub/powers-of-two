@@ -3,7 +3,6 @@ import Foundation
 import Testing
 import WaitWhile
 
-@MainActor
 struct SerializerTests {
     @Test("serializer serializes `vend` values into the configured handler")
     func serializer() async {
@@ -16,7 +15,7 @@ struct SerializerTests {
         await subject.vend(1)
         await subject.vend(2)
         await subject.vend(3)
-        await #while(values.count < 2)
+        // await #while(values.count < 2)
         #expect(values == [1, 2])
     }
 

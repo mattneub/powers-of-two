@@ -3,7 +3,6 @@ import Foundation
 import Testing
 import WaitWhile
 
-@MainActor
 struct GameProcessorTests {
     let subject = GameProcessor()
     let presenter = MockReceiverPresenter<GameEffect, GameState>()
@@ -100,7 +99,7 @@ struct GameProcessorTests {
         #expect(grid.methodsCalled.first == "userMoved(direction:)")
         #expect(grid.direction == .up)
         #expect(presenter.thingsReceived.first == .perform(assessment: assessment))
-        await #while(presenter.statesPresented.isEmpty)
+        // await #while(presenter.statesPresented.isEmpty)
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
@@ -117,7 +116,7 @@ struct GameProcessorTests {
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment)])
-        await #while(presenter.statesPresented.isEmpty)
+        // await #while(presenter.statesPresented.isEmpty)
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
@@ -134,7 +133,7 @@ struct GameProcessorTests {
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)", "insertRandomTile()"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment), .add([reducer])])
-        await #while(presenter.statesPresented.isEmpty)
+        // await #while(presenter.statesPresented.isEmpty)
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
@@ -150,7 +149,7 @@ struct GameProcessorTests {
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)", "insertRandomTile()"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment)])
-        await #while(presenter.statesPresented.isEmpty)
+        // await #while(presenter.statesPresented.isEmpty)
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 }

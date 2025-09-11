@@ -3,7 +3,6 @@ import Foundation
 import Testing
 import WaitWhile
 
-@MainActor
 struct HelpProcessorTests {
     let subject = HelpProcessor()
     let presenter = MockReceiverPresenter<Void, HelpState>()

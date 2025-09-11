@@ -2,7 +2,6 @@
 import Foundation
 import Testing
 
-@MainActor
 struct GridLogicTests {
     @Test("traversals: is correct for every move direction")
     func traversals() throws {

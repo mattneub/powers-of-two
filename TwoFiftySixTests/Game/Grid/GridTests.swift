@@ -2,7 +2,6 @@
 import Foundation
 import Testing
 
-@MainActor
 struct GridTests {
     let subject = Grid()
     let gridLogic = MockGridLogic()

@@ -2,7 +2,6 @@
 import Testing
 import UIKit
 
-@MainActor
 struct UIViewTests {
     init() {
         MockUIView.duration = 0

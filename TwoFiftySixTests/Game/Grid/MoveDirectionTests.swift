@@ -2,7 +2,6 @@
 import Foundation
 import Testing
 
-@MainActor
 struct MoveDirectionTests {
     @Test("Slot-vector addition works as expect")
     func addition() {

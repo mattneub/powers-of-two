@@ -2,7 +2,6 @@
 import UIKit
 import Testing
 
-@MainActor
 struct ApplyingTests {
     @Test("applying works as expected")
     func applying() {

@@ -2,7 +2,6 @@
 import Foundation
 import Testing
 
-@MainActor
 struct StatsProcessorTests {
     let subject = StatsProcessor()
     let presenter = MockReceiverPresenter<Void, StatsState>()
