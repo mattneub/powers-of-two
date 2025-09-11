@@ -1,5 +1,4 @@
 /// Processor containing the logic for the stats module.
-@MainActor
 final class StatsProcessor: Processor {
 
     /// Reference to the presenter. Set by the coordinator on module creation.

@@ -3,7 +3,7 @@ import Algorithms
 
 
 /// Protocol describing the public face of the Grid.
-protocol GridType {
+protocol GridType: Sendable {
     var tiles: [TileReducer] { get }
     var highestValue: Int { get }
     func empty()
@@ -16,15 +16,12 @@ protocol GridType {
 /// of slots, and manages tiles which go into those slots. It is the source of truth for the
 /// game state and its move logic, that is, the logic of gravity and merges when the user moves.
 /// A single instance exists, the servant of the GameProcessor.
-final class Grid: GridType, CustomStringConvertible {
+final class Grid: GridType {
     /// Array of arrays where the tiles live.
     private lazy var grid: [[Tile?]] = .init(repeating: .init(repeating: nil, count: 4), count: 4)
 
     /// GridLogic object that knows how to move, merge, and assess in response to user's move.
     lazy var gridLogic: GridLogicType = GridLogic(grid: self)
-
-    /// The description of the Grid is merely the description of the array of array of tiles.
-    var description: String { grid.description }
 
     /// Subscripts into the array of arrays, for convenience. You can say column-comma-row, or you
     /// can supply a slot.

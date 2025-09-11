@@ -1,6 +1,5 @@
 import UIKit
 
-@MainActor
 protocol RootCoordinatorType: AnyObject {
 
     /// Set up the initial module for the entire app, putting the interface into the window.
@@ -20,7 +19,6 @@ protocol RootCoordinatorType: AnyObject {
     func enteringBackground()
 }
 
-@MainActor
 final class RootCoordinator: RootCoordinatorType {
     var gameProcessor: (any Processor<GameAction, GameState, GameEffect>)?
     var statsProcessor: (any Processor<StatsAction, StatsState, Void>)?

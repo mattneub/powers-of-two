@@ -155,18 +155,20 @@ final class Board: UIView, Receiver {
             tiles[tile.id] = nil // release the tile view
         }
         // Part Three: Finish enacting merges, by changing the value of the merge tile, with
-        // cute pop animation.
+        // cute pop animation, which is moved off to a task so we don't have to wait for it.
         for (tile, newValue) in tilesToChangeValue {
             tile.value = newValue
         }
-        await UIView.animateAsync(withDuration: unlessTesting(0.1), delay: 0, options: []) {
-            for (tile, _) in tilesToChangeValue {
-                tile.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        Task {
+            await UIView.animateAsync(withDuration: unlessTesting(0.1), delay: 0, options: []) {
+                for (tile, _) in tilesToChangeValue {
+                    tile.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                }
             }
-        }
-        await UIView.animateAsync(withDuration: unlessTesting(0.1), delay: 0, options: []) {
-            for (tile, _) in tilesToChangeValue {
-                tile.transform = .identity
+            await UIView.animateAsync(withDuration: unlessTesting(0.1), delay: 0, options: []) {
+                for (tile, _) in tilesToChangeValue {
+                    tile.transform = .identity
+                }
             }
         }
     }

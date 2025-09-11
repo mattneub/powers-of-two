@@ -1,5 +1,4 @@
 /// Processor that manages the overall game logic and app behavior.
-@MainActor
 final class GameProcessor: Processor {
     
     /// Reference to our chief presenter. Set by the coordinator on module creation.
@@ -48,22 +47,11 @@ final class GameProcessor: Processor {
             coordinator?.showStats()
         case .userMoved(let direction):
             let assessment = grid.userMoved(direction: direction.moveDirection)
-            // We want the `await` here to be as short as possible, so that the serializer
-            // doesn't fall too far behind the user's gestures. So we combine the two
-            // aspects of the board animation into a single task group — and we move the
-            // presentation of the highest value out of the `await` altogether.
-            await withTaskGroup(of: Void.self) { group in
-                group.addTask {
-                    await self.presenter?.receive(.perform(assessment: assessment))
+            await presenter?.receive(.perform(assessment: assessment))
+            if !assessment.moves.isEmpty || !assessment.merges.isEmpty {
+                if let tile = self.grid.insertRandomTile() {
+                    await presenter?.receive(.add([tile]))
                 }
-                group.addTask {
-                    if !assessment.moves.isEmpty || !assessment.merges.isEmpty {
-                        if let tile = await self.grid.insertRandomTile() {
-                            await self.presenter?.receive(.add([tile]))
-                        }
-                    }
-                }
-                for await _ in group {}
             }
             Task {
                 await presentHighestValue()

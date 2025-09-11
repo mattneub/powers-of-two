@@ -1,5 +1,4 @@
 /// Processor containing the logic for the help module.
-@MainActor
 final class HelpProcessor: Processor {
     
     /// Reference to the presenter. Set by the coordinator on module creation.
