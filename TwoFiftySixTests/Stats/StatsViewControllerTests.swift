@@ -12,11 +12,12 @@ struct StatsViewControllerTests {
     }
 
     @Test("viewDidLoad: sends initialInterface")
-    func viewDidLoad() async {
+    func viewDidLoad() async throws {
         subject.loadViewIfNeeded()
-        // await #while(processor.thingsReceived.isEmpty)
+        try await waitWhile { processor.thingsReceived.isEmpty }
         #expect(processor.thingsReceived == [.initialInterface])
-        // #expect(subject.containerViewType == HistogramEntryContainerView.self)
+        let ok = subject.containerViewType == HistogramEntryContainerView.self // outsmart macro
+        #expect(ok)
         #expect(subject.entriesConfigured == false)
     }
 
@@ -53,9 +54,9 @@ struct StatsViewControllerTests {
     }
 
     @Test("doDone: sends done to processor")
-    func doDone() async {
+    func doDone() async throws {
         subject.doDone(self)
-        // await #while(processor.thingsReceived.isEmpty)
+        try await waitWhile { processor.thingsReceived.isEmpty }
         #expect(processor.thingsReceived.last == .done)
     }
 }

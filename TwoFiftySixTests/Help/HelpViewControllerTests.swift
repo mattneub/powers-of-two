@@ -22,7 +22,7 @@ struct HelpViewControllerTests {
         let webView = try #require(subject.webView)
         #expect(webView.superview === subject.view)
         #expect(webView.navigationDelegate === subject)
-        // await #while(processor.thingsReceived.isEmpty)
+        try await waitWhile { processor.thingsReceived.isEmpty }
         #expect(processor.thingsReceived.first == .initialInterface)
     }
 
@@ -40,9 +40,9 @@ struct HelpViewControllerTests {
     }
 
     @Test("doDone: calls done")
-    func doDone() async {
+    func doDone() async throws {
         subject.doDone(self)
-        // await #while(processor.thingsReceived.isEmpty)
+        try await waitWhile { processor.thingsReceived.isEmpty }
         #expect(processor.thingsReceived.first == .done)
     }
 

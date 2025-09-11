@@ -24,7 +24,6 @@ struct RootCoordinatorTests {
         let subject = RootCoordinator()
         subject.rootViewController = dummyViewController
         subject.showStats()
-        // await #while(dummyViewController.presentedViewController == nil)
         let viewController = try #require(dummyViewController.presentedViewController as? StatsViewController)
         let processor = try #require(subject.statsProcessor as? StatsProcessor)
         #expect(processor.presenter === viewController)
@@ -39,7 +38,6 @@ struct RootCoordinatorTests {
         let subject = RootCoordinator()
         subject.rootViewController = dummyViewController
         subject.showHelp()
-        // await #while(dummyViewController.presentedViewController == nil)
         let navController = try #require(dummyViewController.presentedViewController as? UINavigationController)
         let viewController = try #require(navController.viewControllers.first as? HelpViewController)
         let processor = try #require(subject.helpProcessor as? HelpProcessor)
@@ -56,20 +54,19 @@ struct RootCoordinatorTests {
         subject.rootViewController = rootViewController
         let presentedViewController = UIViewController()
         rootViewController.present(presentedViewController, animated: false)
-        // await #while(rootViewController.presentedViewController == nil)
         #expect(rootViewController.presentedViewController === presentedViewController)
         subject.dismiss() // this is the test
-        // await #while(rootViewController.presentedViewController != nil)
+        try await waitWhile { rootViewController.presentedViewController != nil }
         #expect(rootViewController.presentedViewController == nil)
     }
 
     @Test("enteringBackground: sends enteringBackground to game processor")
-    func enteringBackground() async {
+    func enteringBackground() async throws {
         let processor = MockProcessor<GameAction, GameState, GameEffect>()
         let subject = RootCoordinator()
         subject.gameProcessor = processor
         subject.enteringBackground()
-        // await #while(processor.thingsReceived.isEmpty)
+        try await waitWhile { processor.thingsReceived.isEmpty }
         #expect(processor.thingsReceived.first == .enteringBackground)
     }
 }

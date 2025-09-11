@@ -88,7 +88,7 @@ struct GameProcessorTests {
     }
 
     @Test("receive userMoved(direction:): calls grid userMoved with direction, passes assessment to presenter perform")
-    func userMoved() async {
+    func userMoved() async throws {
         let assessment = Assessment(
             moves: [.init(tile: UUID(), slot: .init(column: 1, row: 2))],
             merges: [.init(tile: UUID(), absorbedTile: UUID(), newValue: 100)]
@@ -99,12 +99,12 @@ struct GameProcessorTests {
         #expect(grid.methodsCalled.first == "userMoved(direction:)")
         #expect(grid.direction == .up)
         #expect(presenter.thingsReceived.first == .perform(assessment: assessment))
-        // await #while(presenter.statesPresented.isEmpty)
+        try await waitWhile { presenter.statesPresented.isEmpty }
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
     @Test("received userMoved(direction:): if assessment is empty, stops")
-    func userMovedEmptyAssessment() async {
+    func userMovedEmptyAssessment() async throws {
         let reducer = TileReducer(tile: Tile(value: 1, column: 2, row: 3))
         grid.tilesToReturn = [reducer]
         let assessment = Assessment(
@@ -116,12 +116,12 @@ struct GameProcessorTests {
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment)])
-        // await #while(presenter.statesPresented.isEmpty)
+        try await waitWhile { presenter.statesPresented.isEmpty }
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
     @Test("receive userMoved(direction:): if assessment not empty, calls grid insertRandomTile() once, if not nil, sends result to presenter add")
-    func userMovedPartTwo() async {
+    func userMovedPartTwo() async throws {
         let reducer = TileReducer(tile: Tile(value: 1, column: 2, row: 3))
         grid.tilesToReturn = [reducer]
         let assessment = Assessment(
@@ -133,12 +133,12 @@ struct GameProcessorTests {
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)", "insertRandomTile()"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment), .add([reducer])])
-        // await #while(presenter.statesPresented.isEmpty)
+        try await waitWhile { presenter.statesPresented.isEmpty }
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
     @Test("receive userMoved(direction:): if assessment not empty, calls grid insertRandomTile() once, if nil, stops")
-    func userMovedPartTwoNilRandomTile() async {
+    func userMovedPartTwoNilRandomTile() async throws {
         grid.tilesToReturn = [] // mock grid will return nil
         let assessment = Assessment(
             moves: [.init(tile: UUID(), slot: .init(column: 1, row: 2))],
@@ -149,7 +149,7 @@ struct GameProcessorTests {
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)", "insertRandomTile()"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment)])
-        // await #while(presenter.statesPresented.isEmpty)
+        try await waitWhile { presenter.statesPresented.isEmpty }
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 }

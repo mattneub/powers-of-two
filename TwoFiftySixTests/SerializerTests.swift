@@ -5,7 +5,7 @@ import WaitWhile
 
 struct SerializerTests {
     @Test("serializer serializes `vend` values into the configured handler")
-    func serializer() async {
+    func serializer() async throws {
         let subject = Serializer<Int>()
         var values = [Int]()
         await subject.startStream { @MainActor value in
@@ -15,7 +15,7 @@ struct SerializerTests {
         await subject.vend(1)
         await subject.vend(2)
         await subject.vend(3)
-        // await #while(values.count < 2)
+        try await waitWhile { values.count < 2 }
         #expect(values == [1, 2])
     }
 
