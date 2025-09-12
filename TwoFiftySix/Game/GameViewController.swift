@@ -58,7 +58,10 @@ final class GameViewController: UIViewController, ReceiverPresenter {
 
     func present(_ state: GameState) async {
         if state.highestValue > 4 {
-            highest.text = String(state.highestValue)
+            if String(state.highestValue) != highest.text {
+                highest.text = String(state.highestValue)
+                await animateHighest()
+            }
         } else {
             highest.text = " "
         }
@@ -68,6 +71,10 @@ final class GameViewController: UIViewController, ReceiverPresenter {
         if let board = board as? any Receiver<GameEffect> {
             await board.receive(effect)
         }
+    }
+
+    func animateHighest() async {
+        await UIView.transitionAsync(with: highest, duration: 0.25, options: [.transitionFlipFromBottom])
     }
 
     /// The user performed a swipe gesture, which constitutes a move. Pass it on to the
