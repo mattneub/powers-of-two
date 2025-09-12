@@ -1,6 +1,7 @@
 @testable import TwoFiftySix
 import UIKit
 import Testing
+import WaitWhile
 
 struct StatsViewControllerTests {
     let subject = StatsViewController()
@@ -13,7 +14,7 @@ struct StatsViewControllerTests {
     @Test("viewDidLoad: sends initialInterface")
     func viewDidLoad() async throws {
         subject.loadViewIfNeeded()
-        await waitWhile { processor.thingsReceived.isEmpty }
+        await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived == [.initialInterface])
         let ok = subject.containerViewType == HistogramEntryContainerView.self // outsmart macro
         #expect(ok)
@@ -55,7 +56,7 @@ struct StatsViewControllerTests {
     @Test("doDone: sends done to processor")
     func doDone() async throws {
         subject.doDone(self)
-        await waitWhile { processor.thingsReceived.isEmpty }
+        await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived.last == .done)
     }
 }

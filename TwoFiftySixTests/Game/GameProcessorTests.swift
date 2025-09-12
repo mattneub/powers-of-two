@@ -1,6 +1,7 @@
 @testable import TwoFiftySix
 import Foundation
 import Testing
+import WaitWhile
 
 struct GameProcessorTests {
     let subject = GameProcessor()
@@ -98,7 +99,7 @@ struct GameProcessorTests {
         #expect(grid.methodsCalled.first == "userMoved(direction:)")
         #expect(grid.direction == .up)
         #expect(presenter.thingsReceived.first == .perform(assessment: assessment))
-        await waitWhile { presenter.statesPresented.isEmpty }
+        await #while(presenter.statesPresented.isEmpty)
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
@@ -115,7 +116,7 @@ struct GameProcessorTests {
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment)])
-        await waitWhile { presenter.statesPresented.isEmpty }
+        await #while(presenter.statesPresented.isEmpty)
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
@@ -132,7 +133,7 @@ struct GameProcessorTests {
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)", "insertRandomTile()"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment), .add([reducer])])
-        await waitWhile { presenter.statesPresented.isEmpty }
+        await #while(presenter.statesPresented.isEmpty)
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 
@@ -148,7 +149,7 @@ struct GameProcessorTests {
         await subject.receive(.userMoved(direction: .up))
         #expect(grid.methodsCalled == ["userMoved(direction:)", "insertRandomTile()"])
         #expect(presenter.thingsReceived == [.perform(assessment: assessment)])
-        await waitWhile { presenter.statesPresented.isEmpty }
+        await #while(presenter.statesPresented.isEmpty)
         #expect(presenter.statesPresented.first?.highestValue == 200)
     }
 }

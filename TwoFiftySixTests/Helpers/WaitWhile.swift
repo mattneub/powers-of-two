@@ -1,6 +1,8 @@
 import Testing
 
-func waitWhile(_ seconds: Double = 5, condition: () async -> Bool) async {
+// Introduced this as a way to explore the macro functionality, but now I've updated
+// the macro to match, so there is no need for it; it is unused.
+func waitWhileNOT(_ seconds: Double = 5, condition: () async -> Bool) async {
     var timedOut = false
     let timer = Task {
         try await Task.sleep(for: .seconds(seconds))

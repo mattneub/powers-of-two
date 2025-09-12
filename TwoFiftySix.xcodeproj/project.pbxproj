@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F08C9C82E7493DF00D198CB /* WaitWhile in Frameworks */ = {isa = PBXBuildFile; productRef = 3F08C9C72E7493DF00D198CB /* WaitWhile */; };
 		3F331C2D2E54BCEB009F15B4 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 3F331C2C2E54BCEB009F15B4 /* SnapshotTesting */; };
 		3F5E23032E4BDE0C00449714 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 3F5E23022E4BDE0C00449714 /* Algorithms */; };
 /* End PBXBuildFile section */
@@ -62,6 +63,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F331C2D2E54BCEB009F15B4 /* SnapshotTesting in Frameworks */,
+				3F08C9C82E7493DF00D198CB /* WaitWhile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +119,7 @@
 			name = TwoFiftySixTests;
 			packageProductDependencies = (
 				3F331C2C2E54BCEB009F15B4 /* SnapshotTesting */,
+				3F08C9C72E7493DF00D198CB /* WaitWhile */,
 			);
 			productName = TwoFiftySixTests;
 			productReference = 3FAEED8B2E53DD210073EC6D /* TwoFiftySixTests.xctest */;
@@ -177,6 +180,7 @@
 			packageReferences = (
 				3F5E23012E4BDE0C00449714 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 				3F331C2B2E54BCEB009F15B4 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				3F08C9C62E7493DF00D198CB /* XCRemoteSwiftPackageReference "WaitWhile" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3FE514DD2E47C5510082C44E /* Products */;
@@ -495,6 +499,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3F08C9C62E7493DF00D198CB /* XCRemoteSwiftPackageReference "WaitWhile" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mattneub/WaitWhile";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		3F331C2B2E54BCEB009F15B4 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
@@ -514,6 +526,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3F08C9C72E7493DF00D198CB /* WaitWhile */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F08C9C62E7493DF00D198CB /* XCRemoteSwiftPackageReference "WaitWhile" */;
+			productName = WaitWhile;
+		};
 		3F331C2C2E54BCEB009F15B4 /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3F331C2B2E54BCEB009F15B4 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;

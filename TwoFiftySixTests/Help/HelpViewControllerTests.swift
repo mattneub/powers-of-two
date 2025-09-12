@@ -2,6 +2,7 @@
 import UIKit
 import WebKit
 import Testing
+import WaitWhile
 
 struct HelpViewControllerTests {
     let subject = HelpViewController()
@@ -21,7 +22,7 @@ struct HelpViewControllerTests {
         let webView = try #require(subject.webView)
         #expect(webView.superview === subject.view)
         #expect(webView.navigationDelegate === subject)
-        await waitWhile { processor.thingsReceived.isEmpty }
+        await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived.first == .initialInterface)
     }
 
@@ -41,7 +42,7 @@ struct HelpViewControllerTests {
     @Test("doDone: calls done")
     func doDone() async throws {
         subject.doDone(self)
-        await waitWhile { processor.thingsReceived.isEmpty }
+        await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived.first == .done)
     }
 
