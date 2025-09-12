@@ -1,7 +1,6 @@
 @testable import TwoFiftySix
 import Foundation
 import Testing
-import WaitWhile
 
 struct HelpProcessorTests {
     let subject = HelpProcessor()

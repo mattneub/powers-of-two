@@ -1,7 +1,6 @@
 @testable import TwoFiftySix
 import UIKit
 import Testing
-import WaitWhile
 
 struct RootCoordinatorTests {
     @Test("createInitialInterface: creates and configures game module, sets up initial interface")
@@ -56,7 +55,7 @@ struct RootCoordinatorTests {
         rootViewController.present(presentedViewController, animated: false)
         #expect(rootViewController.presentedViewController === presentedViewController)
         subject.dismiss() // this is the test
-        try await waitWhile { rootViewController.presentedViewController != nil }
+        await waitWhile { rootViewController.presentedViewController != nil }
         #expect(rootViewController.presentedViewController == nil)
     }
 
@@ -66,7 +65,7 @@ struct RootCoordinatorTests {
         let subject = RootCoordinator()
         subject.gameProcessor = processor
         subject.enteringBackground()
-        try await waitWhile { processor.thingsReceived.isEmpty }
+        await waitWhile { processor.thingsReceived.isEmpty }
         #expect(processor.thingsReceived.first == .enteringBackground)
     }
 }

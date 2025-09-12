@@ -1,7 +1,6 @@
 @testable import TwoFiftySix
 import UIKit
 import Testing
-import WaitWhile
 
 struct SceneDelegateTests {
     @Test("bootstrap: tells the root coordinator to create the interface")

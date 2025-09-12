@@ -1,21 +1,18 @@
 import Testing
 
-func waitWhile(_ seconds: Double = 5, condition: () async throws -> Bool) async throws {
-    enum TimeOutError: Error {
-        case timedOut
-    }
-    var timer: Task<Void, Error>?
+func waitWhile(_ seconds: Double = 5, condition: () async -> Bool) async {
     var timedOut = false
-    timer = Task {
+    let timer = Task {
         try await Task.sleep(for: .seconds(seconds))
         timedOut = true
     }
-    while try await condition() {
-        try await Task.sleep(for: .seconds(0.01))
+    while await condition() {
+        try? await Task.sleep(for: .seconds(0.01))
         await Task.yield()
         if timedOut {
-            throw TimeOutError.timedOut
+            Issue.record("timed out")
+            break
         }
     }
-    timer?.cancel()
+    timer.cancel()
 }

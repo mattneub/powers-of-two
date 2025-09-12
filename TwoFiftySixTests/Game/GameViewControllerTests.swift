@@ -1,7 +1,6 @@
 @testable import TwoFiftySix
 import UIKit
 import Testing
-import WaitWhile
 
 struct GameViewControllerTests {
     let subject = GameViewController()
@@ -36,7 +35,7 @@ struct GameViewControllerTests {
     @Test("viewDidLoad: configures the serializer")
     func viewDidLoadSerializer() async throws {
         subject.loadViewIfNeeded()
-        try await waitWhile { await serializer.methodsCalled.isEmpty }
+        await waitWhile { await serializer.methodsCalled.isEmpty }
         #expect(await serializer.methodsCalled.first == "startStream(_:)")
         try? await serializer.handler?(.left)
         #expect(processor.thingsReceived.first == .userMoved(direction: .left))
@@ -45,7 +44,7 @@ struct GameViewControllerTests {
     @Test("layoutSubviews: sends processor initialInterface first time only")
     func layoutSubviews() async throws {
         subject.view.layoutIfNeeded()
-        try await waitWhile { processor.thingsReceived.isEmpty }
+        await waitWhile { processor.thingsReceived.isEmpty }
         #expect(processor.thingsReceived == [.initialInterface])
         subject.view.setNeedsLayout()
         subject.view.layoutIfNeeded()
@@ -80,7 +79,7 @@ struct GameViewControllerTests {
         let recognizer = UISwipeGestureRecognizer()
         recognizer.direction = .right
         subject.swipe(recognizer)
-        try await waitWhile { await serializer.value == nil }
+        await waitWhile { await serializer.value == nil }
         #expect(await serializer.methodsCalled.first == "vend(_:)")
         #expect(await serializer.value == .right)
     }
@@ -88,21 +87,21 @@ struct GameViewControllerTests {
     @Test("doNew: calls newGame")
     func doNew() async throws {
         subject.doNew(self)
-        try await waitWhile { processor.thingsReceived.isEmpty }
+        await waitWhile { processor.thingsReceived.isEmpty }
         #expect(processor.thingsReceived.first == .newGame)
     }
 
     @Test("doStats: calls stats")
     func doStats() async throws {
         subject.doStats(self)
-        try await waitWhile { processor.thingsReceived.isEmpty }
+        await waitWhile { processor.thingsReceived.isEmpty }
         #expect(processor.thingsReceived.first == .stats)
     }
 
     @Test("doHelp: calls help")
     func doHelp() async throws {
         subject.doHelp(self)
-        try await waitWhile { processor.thingsReceived.isEmpty }
+        await waitWhile { processor.thingsReceived.isEmpty }
         #expect(processor.thingsReceived.first == .help)
     }
 }

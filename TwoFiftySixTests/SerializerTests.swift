@@ -1,7 +1,6 @@
 @testable import TwoFiftySix
 import Foundation
 import Testing
-import WaitWhile
 
 struct SerializerTests {
     @Test("serializer serializes `vend` values into the configured handler")
@@ -15,7 +14,7 @@ struct SerializerTests {
         await subject.vend(1)
         await subject.vend(2)
         await subject.vend(3)
-        try await waitWhile { values.count < 2 }
+        await waitWhile { values.count < 2 }
         #expect(values == [1, 2])
     }
 
