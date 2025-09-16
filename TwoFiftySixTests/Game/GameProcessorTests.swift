@@ -75,10 +75,20 @@ struct GameProcessorTests {
         #expect(presenter.thingsReceived == [.empty, .add([reducer, reducer2])])
     }
 
-    @Test("receive stats: calls coordinator showStats")
+    @Test("receive stats: if there are stats, calls coordinator showStats")
     func stats() async {
+        persistence.scoresToReturn = [1, 2, 3]
         await subject.receive(.stats)
         #expect(coordinator.methodsCalled == ["showStats()"])
+        #expect(presenter.thingsReceived.isEmpty)
+    }
+
+    @Test("receive stats: if there are no stats, calls presenter noStats")
+    func statsNoStats() async {
+        persistence.scoresToReturn = nil
+        await subject.receive(.stats)
+        #expect(coordinator.methodsCalled.isEmpty)
+        #expect(presenter.thingsReceived == [.noStats])
     }
 
     @Test("receive help: calls coordinator showHelp")

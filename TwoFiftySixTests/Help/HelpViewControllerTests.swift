@@ -15,8 +15,13 @@ struct HelpViewControllerTests {
     @Test("viewDidLoad: configures the view, calls initialInterface")
     func viewDidLoad() async throws {
         subject.loadViewIfNeeded()
-        #expect(subject.title == "Help")
+        let title = try #require(subject.navigationItem.attributedTitle)
+        #expect(String(title.characters) == "Help")
+        #expect(title.runs.count == 1)
+        let run = title.runs[title.runs.startIndex]
+        #expect(run.attributes.uiKit.font == UIFont(name: "Georgia-Bold", size: 26)!)
         let doneButton = try #require(subject.navigationItem.rightBarButtonItem)
+        #expect(doneButton.style == .plain)
         #expect(doneButton.target === subject)
         #expect(doneButton.action == #selector(subject.doDone))
         let webView = try #require(subject.webView)

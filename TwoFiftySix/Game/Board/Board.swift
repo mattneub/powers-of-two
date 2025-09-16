@@ -98,6 +98,7 @@ final class Board: UIView, Receiver {
             await empty()
         case .perform(let assessment):
             await perform(assessment: assessment)
+        default: break
         }
     }
 

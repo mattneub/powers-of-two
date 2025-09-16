@@ -12,8 +12,13 @@ final class HelpViewController: UIViewController, ReceiverPresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Help"
+        if let font = UIFont(name: "Georgia-Bold", size: 26) {
+            navigationItem.attributedTitle = .init("Help", attributes: .init().font(font))
+        } else {
+            navigationItem.title = "Help"
+        }
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doDone))
+        doneButton.style = .plain
         navigationItem.rightBarButtonItem = doneButton
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false

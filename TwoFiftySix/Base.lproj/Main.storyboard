@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24127" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -80,6 +80,7 @@
                     <connections>
                         <outlet property="board" destination="3ZU-ae-0JU" id="3l8-gt-m7u"/>
                         <outlet property="highest" destination="USy-OH-WKD" id="5eY-Ds-CBz"/>
+                        <outlet property="statsButton" destination="Dc2-c7-i6h" id="FUK-iw-5Km"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -94,20 +95,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EYg-Xp-nCe">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                <items>
-                                    <navigationItem title="Stats" largeTitleDisplayMode="never" id="43L-eV-bzo">
-                                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="x98-u0-9k9">
-                                            <connections>
-                                                <action selector="doDone:" destination="43B-69-dLa" id="JsJ-tO-L3q"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vdg-La-sLv">
-                                <rect key="frame" x="0.0" y="44" width="414" height="692"/>
+                                <rect key="frame" x="0.0" y="74" width="414" height="662"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AfA-Gy-PhT">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
@@ -134,11 +123,8 @@
                         <constraints>
                             <constraint firstItem="0Er-12-Y8T" firstAttribute="bottom" secondItem="vdg-La-sLv" secondAttribute="bottom" id="Kwz-tr-huw"/>
                             <constraint firstAttribute="trailing" secondItem="vdg-La-sLv" secondAttribute="trailing" id="VRe-kN-Qzt"/>
-                            <constraint firstItem="EYg-Xp-nCe" firstAttribute="leading" secondItem="9zF-sd-Mam" secondAttribute="leading" id="Vp2-fP-0m0"/>
-                            <constraint firstItem="EYg-Xp-nCe" firstAttribute="top" secondItem="9zF-sd-Mam" secondAttribute="top" id="dUV-95-7Ty"/>
                             <constraint firstItem="vdg-La-sLv" firstAttribute="leading" secondItem="9zF-sd-Mam" secondAttribute="leading" id="hdt-r0-9o2"/>
-                            <constraint firstItem="vdg-La-sLv" firstAttribute="top" secondItem="EYg-Xp-nCe" secondAttribute="bottom" id="iKk-PR-9lh"/>
-                            <constraint firstAttribute="trailing" secondItem="EYg-Xp-nCe" secondAttribute="trailing" id="zR5-oD-Tfy"/>
+                            <constraint firstItem="vdg-La-sLv" firstAttribute="top" secondItem="0Er-12-Y8T" secondAttribute="top" constant="54" id="iKb-Ay-RDU"/>
                         </constraints>
                     </view>
                     <connections>
@@ -154,7 +140,7 @@
             <objects>
                 <viewController storyboardIdentifier="help" id="KrB-M3-hRe" customClass="HelpViewController" customModule="TwoFiftySix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qSW-Jg-QPh">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="662"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="JNe-nW-ETb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>

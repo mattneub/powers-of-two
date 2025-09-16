@@ -72,7 +72,8 @@ final class RootCoordinator: RootCoordinatorType {
         processor.presenter = viewController
         self.statsProcessor = processor
         processor.coordinator = self
-        self.rootViewController?.present(viewController, animated: unlessTesting(true))
+        let navigationController = UINavigationController(rootViewController: viewController)
+        self.rootViewController?.present(navigationController, animated: unlessTesting(true))
     }
 
     func dismiss() {

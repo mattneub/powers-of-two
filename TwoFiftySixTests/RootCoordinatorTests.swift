@@ -24,7 +24,8 @@ struct RootCoordinatorTests {
         let subject = RootCoordinator()
         subject.rootViewController = dummyViewController
         subject.showStats()
-        let viewController = try #require(dummyViewController.presentedViewController as? StatsViewController)
+        let navigationController = try #require(dummyViewController.presentedViewController as? UINavigationController)
+        let viewController = try #require(navigationController.viewControllers[0] as? StatsViewController)
         let processor = try #require(subject.statsProcessor as? StatsProcessor)
         #expect(processor.presenter === viewController)
         #expect(viewController.processor === processor)

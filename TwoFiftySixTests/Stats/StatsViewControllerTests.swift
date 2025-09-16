@@ -11,8 +11,20 @@ struct StatsViewControllerTests {
         subject.processor = processor
     }
 
-    @Test("viewDidLoad: sends initialInterface")
+    @Test("viewDidLoad: configures interface")
     func viewDidLoad() async throws {
+        subject.loadViewIfNeeded()
+        let title = try #require(subject.navigationItem.attributedTitle)
+        #expect(String(title.characters) == "Stats")
+        #expect(title.runs.count == 1)
+        let run = title.runs[title.runs.startIndex]
+        #expect(run.attributes.uiKit.font == UIFont.preferredFont(forTextStyle: .title1))
+        let doneButton = try #require(subject.navigationItem.rightBarButtonItem)
+        #expect(doneButton.style == .prominent)
+    }
+
+    @Test("viewDidLoad: sends initialInterface")
+    func viewDidLoad2() async throws {
         subject.loadViewIfNeeded()
         await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived == [.initialInterface])

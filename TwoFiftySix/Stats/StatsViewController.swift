@@ -18,6 +18,11 @@ final class StatsViewController: UIViewController, ReceiverPresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let font = UIFont.preferredFont(forTextStyle: .title1)
+        navigationItem.attributedTitle = .init("Stats", attributes: .init().font(font))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doDone))
+        doneButton.style = .prominent
+        navigationItem.rightBarButtonItem = doneButton
         Task {
             await processor?.receive(.initialInterface)
         }
@@ -53,7 +58,7 @@ final class StatsViewController: UIViewController, ReceiverPresenter {
     }
 
     /// Action method of the done button.
-    @IBAction func doDone(_ sender: Any) {
+    @objc func doDone(_ sender: Any) {
         Task {
             await processor?.receive(.done)
         }

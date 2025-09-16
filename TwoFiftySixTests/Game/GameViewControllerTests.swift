@@ -63,8 +63,19 @@ struct GameViewControllerTests {
         #expect(highest.text == "5")
     }
 
-    @Test("receive: passes effect on to board")
-    func receive() async {
+    @Test("receive: noStats puts up alert")
+    func receiveNoStats() async throws {
+        makeWindow(viewController: subject)
+        await subject.receive(.noStats)
+        await #while(subject.presentedViewController == nil)
+        let alert = try #require(subject.presentedViewController as? UIAlertController)
+        #expect(alert.title == "No high scores yet.")
+        #expect(alert.actions.count == 1)
+        #expect(alert.actions.first?.title == "OK")
+    }
+
+    @Test("receive: otherwise passes effect on to board")
+    func receiveOther() async {
         await subject.receive(.empty)
         #expect(board.thingsReceived == [.empty])
         await subject.receive(.perform(assessment: Assessment(moves: [], merges: [])))

@@ -13,6 +13,10 @@ final class GameViewController: UIViewController, ReceiverPresenter {
 
     @IBOutlet var highest: UILabel!
 
+    // Added this outlet because I was hoping to show the "no stats" alert as a popover from it,
+    // but that didn't work.
+    @IBOutlet var statsButton: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         highest.text = " "
@@ -68,12 +72,24 @@ final class GameViewController: UIViewController, ReceiverPresenter {
     }
 
     func receive(_ effect: GameEffect) async {
-        if let board = board as? any Receiver<GameEffect> {
-            await board.receive(effect)
+        switch effect {
+        case .noStats: // put up an alert explaining why nothing happens
+            let alert = UIAlertController(
+                title: "No high scores yet.",
+                message: nil,
+                preferredStyle: .alert
+            )
+            alert.addAction(.init(title: "OK", style: .default))
+            present(alert, animated: unlessTesting(true))
+        default: // other effects are passed on to the board
+            if let board = board as? any Receiver<GameEffect> {
+                await board.receive(effect)
+            }
         }
     }
 
-    func animateHighest() async {
+    /// Animate flipping the `highest` label. Called by `present`.
+    private func animateHighest() async {
         await UIView.transitionAsync(with: highest, duration: 0.25, options: [.transitionFlipFromBottom])
     }
 

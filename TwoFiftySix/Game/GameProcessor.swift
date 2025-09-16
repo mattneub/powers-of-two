@@ -44,6 +44,12 @@ final class GameProcessor: Processor {
                 await presenter?.receive(.add([tile1, tile2]))
             }
         case .stats:
+            let array = services.persistence.loadHighScores() ?? []
+            guard !array.isEmpty else {
+                // don't put up an empty stats view; show an explanatory alert instead
+                await presenter?.receive(.noStats)
+                return
+            }
             coordinator?.showStats()
         case .userMoved(let direction):
             let assessment = grid.userMoved(direction: direction.moveDirection)
