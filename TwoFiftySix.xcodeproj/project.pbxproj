@@ -10,6 +10,7 @@
 		3F08C9C82E7493DF00D198CB /* WaitWhile in Frameworks */ = {isa = PBXBuildFile; productRef = 3F08C9C72E7493DF00D198CB /* WaitWhile */; };
 		3F331C2D2E54BCEB009F15B4 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 3F331C2C2E54BCEB009F15B4 /* SnapshotTesting */; };
 		3F5E23032E4BDE0C00449714 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 3F5E23022E4BDE0C00449714 /* Algorithms */; };
+		3FD7335E2E7C8A3700C33469 /* Powers.icon in Resources */ = {isa = PBXBuildFile; fileRef = 3FD7335D2E7C8A3700C33469 /* Powers.icon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		3FAEED8B2E53DD210073EC6D /* TwoFiftySixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwoFiftySixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FAEED982E53DD900073EC6D /* TwoFiftySix.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TwoFiftySix.xctestplan; sourceTree = "<group>"; };
+		3FD7335D2E7C8A3700C33469 /* Powers.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = Powers.icon; sourceTree = "<group>"; };
 		3FE514DC2E47C5510082C44E /* TwoFiftySix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoFiftySix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -33,6 +35,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				TwoToTheN.svg,
 			);
 			target = 3FE514DB2E47C5510082C44E /* TwoFiftySix */;
 		};
@@ -81,6 +84,7 @@
 		3FE514D32E47C5510082C44E = {
 			isa = PBXGroup;
 			children = (
+				3FD7335D2E7C8A3700C33469 /* Powers.icon */,
 				3FAEED982E53DD900073EC6D /* TwoFiftySix.xctestplan */,
 				3FE514DE2E47C5510082C44E /* TwoFiftySix */,
 				3FAEED8C2E53DD210073EC6D /* TwoFiftySixTests */,
@@ -205,6 +209,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FD7335E2E7C8A3700C33469 /* Powers.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,17 +289,18 @@
 		3FE514F02E47C5520082C44E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Powers;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = W3LHX5RGV2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoFiftySix/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Powers of 2";
+				INFOPLIST_KEY_CFBundleDisplayName = "2 to the N";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.kids-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
@@ -316,17 +322,18 @@
 		3FE514F12E47C5520082C44E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Powers;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = W3LHX5RGV2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoFiftySix/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Powers of 2";
+				INFOPLIST_KEY_CFBundleDisplayName = "2 to the N";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.kids-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
