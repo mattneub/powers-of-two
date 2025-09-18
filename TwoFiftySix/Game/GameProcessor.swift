@@ -26,8 +26,8 @@ final class GameProcessor: Processor {
                 await presenter?.receive(.add([tile1, tile2]))
             }
             await presentHighestValue()
-        case .help:
-            coordinator?.showHelp()
+        case .help(let source):
+            coordinator?.showHelp(source: source)
         case .newGame:
             // Only when the user starts a new game, and only when the highest tile value in the
             // grid is larger than 64, we append that value to the saved list of high scores
@@ -43,14 +43,14 @@ final class GameProcessor: Processor {
             if let tile1 = grid.insertRandomTile(), let tile2 = grid.insertRandomTile() {
                 await presenter?.receive(.add([tile1, tile2]))
             }
-        case .stats:
+        case .stats(let source):
             let array = services.persistence.loadHighScores() ?? []
             guard !array.isEmpty else {
                 // don't put up an empty stats view; show an explanatory alert instead
                 await presenter?.receive(.noStats)
                 return
             }
-            coordinator?.showStats()
+            coordinator?.showStats(source: source)
         case .userMoved(let direction):
             let assessment = grid.userMoved(direction: direction.moveDirection)
             await presenter?.receive(.perform(assessment: assessment))

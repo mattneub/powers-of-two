@@ -117,16 +117,18 @@ struct GameViewControllerTests {
 
     @Test("doStats: calls stats")
     func doStats() async throws {
-        subject.doStats(self)
+        let sender = UIButton()
+        subject.doStats(sender)
         await #while(processor.thingsReceived.isEmpty)
-        #expect(processor.thingsReceived.first == .stats)
+        #expect(processor.thingsReceived.first == .stats(source: sender))
     }
 
     @Test("doHelp: calls help")
     func doHelp() async throws {
-        subject.doHelp(self)
+        let sender = UIBarButtonItem()
+        subject.doHelp(sender)
         await #while(processor.thingsReceived.isEmpty)
-        #expect(processor.thingsReceived.first == .help)
+        #expect(processor.thingsReceived.first == .help(source: sender))
     }
 }
 

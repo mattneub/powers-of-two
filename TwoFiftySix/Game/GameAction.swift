@@ -5,7 +5,7 @@ enum GameAction: Equatable {
     case enteringBackground
     case initialInterface
     case newGame
-    case stats
-    case help
+    case stats(source: UIButton)
+    case help(source: UIBarButtonItem)
     case userMoved(direction: UISwipeGestureRecognizer.Direction)
 }

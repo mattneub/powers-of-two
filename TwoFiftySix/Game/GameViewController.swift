@@ -13,10 +13,6 @@ final class GameViewController: UIViewController, ReceiverPresenter {
 
     @IBOutlet var highest: UILabel!
 
-    // Added this outlet because I was hoping to show the "no stats" alert as a popover from it,
-    // but that didn't work.
-    @IBOutlet var statsButton: UIButton!
-
     override func viewDidLoad() {
         super.viewDidLoad()
         highest.text = " "
@@ -113,16 +109,16 @@ final class GameViewController: UIViewController, ReceiverPresenter {
     }
 
     /// The user tapped the Stats button.
-    @IBAction func doStats(_ sender: Any) {
+    @IBAction func doStats(_ sender: UIButton) {
         Task {
-            await processor?.receive(.stats)
+            await processor?.receive(.stats(source: sender))
         }
     }
 
     /// The user tapped the Help button.
-    @objc func doHelp(_ sender: Any) {
+    @objc func doHelp(_ sender: UIBarButtonItem) {
         Task {
-            await processor?.receive(.help)
+            await processor?.receive(.help(source: sender))
         }
     }
 }

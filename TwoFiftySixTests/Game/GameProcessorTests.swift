@@ -1,5 +1,5 @@
 @testable import TwoFiftySix
-import Foundation
+import UIKit
 import Testing
 import WaitWhile
 
@@ -78,23 +78,29 @@ struct GameProcessorTests {
     @Test("receive stats: if there are stats, calls coordinator showStats")
     func stats() async {
         persistence.scoresToReturn = [1, 2, 3]
-        await subject.receive(.stats)
-        #expect(coordinator.methodsCalled == ["showStats()"])
+        let source = UIButton()
+        await subject.receive(.stats(source: source))
+        #expect(coordinator.methodsCalled == ["showStats(source:)"])
+        #expect(coordinator.button === source)
         #expect(presenter.thingsReceived.isEmpty)
     }
 
     @Test("receive stats: if there are no stats, calls presenter noStats")
     func statsNoStats() async {
         persistence.scoresToReturn = nil
-        await subject.receive(.stats)
+        let source = UIButton()
+        await subject.receive(.stats(source: source))
         #expect(coordinator.methodsCalled.isEmpty)
+        #expect(coordinator.button == nil)
         #expect(presenter.thingsReceived == [.noStats])
     }
 
     @Test("receive help: calls coordinator showHelp")
     func help() async {
-        await subject.receive(.help)
-        #expect(coordinator.methodsCalled == ["showHelp()"])
+        let source = UIBarButtonItem()
+        await subject.receive(.help(source: source))
+        #expect(coordinator.methodsCalled == ["showHelp(source:)"])
+        #expect(coordinator.barButtonItem === source)
     }
 
     @Test("receive userMoved(direction:): calls grid userMoved with direction, passes assessment to presenter perform")

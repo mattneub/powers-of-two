@@ -24,13 +24,18 @@ struct RootCoordinatorTests {
         makeWindow(viewController: dummyViewController)
         let subject = RootCoordinator()
         subject.rootViewController = dummyViewController
-        subject.showStats()
-        let navigationController = try #require(dummyViewController.presentedViewController as? UINavigationController)
-        let viewController = try #require(navigationController.viewControllers[0] as? StatsViewController)
+        let source = UIButton()
+        subject.showStats(source: source)
+        let navController = try #require(dummyViewController.presentedViewController as? UINavigationController)
+        let viewController = try #require(navController.viewControllers[0] as? StatsViewController)
         let processor = try #require(subject.statsProcessor as? StatsProcessor)
         #expect(processor.presenter === viewController)
         #expect(viewController.processor === processor)
         #expect(processor.coordinator === subject)
+        #expect(navController.modalPresentationStyle == .popover)
+        let popper = try #require(navController.popoverPresentationController)
+        #expect(popper.sourceItem as? UIButton == source)
+        #expect(popper.delegate === viewController)
     }
 
     @Test("showHelp: creates and configures help module, presents nav controller")
@@ -39,13 +44,17 @@ struct RootCoordinatorTests {
         makeWindow(viewController: dummyViewController)
         let subject = RootCoordinator()
         subject.rootViewController = dummyViewController
-        subject.showHelp()
+        let source = UIBarButtonItem()
+        subject.showHelp(source: source)
         let navController = try #require(dummyViewController.presentedViewController as? UINavigationController)
         let viewController = try #require(navController.viewControllers.first as? HelpViewController)
         let processor = try #require(subject.helpProcessor as? HelpProcessor)
         #expect(processor.presenter === viewController)
         #expect(viewController.processor === processor)
         #expect(processor.coordinator === subject)
+        #expect(navController.modalPresentationStyle == .popover)
+        let popper = try #require(navController.popoverPresentationController)
+        #expect(popper.sourceItem as? UIBarButtonItem == source)
     }
 
     @Test("dismiss: dismisses presented view controller")

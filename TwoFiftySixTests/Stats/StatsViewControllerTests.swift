@@ -72,6 +72,17 @@ struct StatsViewControllerTests {
         await #while(processor.thingsReceived.isEmpty)
         #expect(processor.thingsReceived.last == .done)
     }
+
+    @Test("adaptive presentation style is none")
+    func adaptive() {
+        let result = subject.adaptivePresentationStyle(
+            for: UIPresentationController(
+                presentedViewController: UIViewController(),
+                presenting: UIViewController()
+            )
+        )
+        #expect(result == .none)
+    }
 }
 
 final class MockContainer: UIView, Presenter {

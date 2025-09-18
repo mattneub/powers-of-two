@@ -64,5 +64,11 @@ final class StatsViewController: UIViewController, ReceiverPresenter {
             await processor?.receive(.done)
         }
     }
-
 }
+
+extension StatsViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        .none
+    }
+}
+

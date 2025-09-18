@@ -7,10 +7,10 @@ protocol RootCoordinatorType: AnyObject {
     func createInitialInterface(window: UIWindow)
 
     /// Show the stats screen.
-    func showStats()
+    func showStats(source: UIButton)
 
     /// Show the help screen.
-    func showHelp()
+    func showHelp(source: UIBarButtonItem)
 
     /// Dismiss presented view controller.
     func dismiss()
@@ -47,7 +47,7 @@ final class RootCoordinator: RootCoordinatorType {
         processor.coordinator = self
     }
 
-    func showHelp() {
+    func showHelp(source: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let viewController = storyboard.instantiateViewController(
             withIdentifier: "help"
@@ -60,10 +60,12 @@ final class RootCoordinator: RootCoordinatorType {
         self.helpProcessor = processor
         processor.coordinator = self
         let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.modalPresentationStyle = .popover
+        navigationController.popoverPresentationController?.sourceItem = source
         self.rootViewController?.present(navigationController, animated: unlessTesting(true))
     }
 
-    func showStats() {
+    func showStats(source: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let viewController = storyboard.instantiateViewController(
             withIdentifier: "stats"
@@ -76,6 +78,9 @@ final class RootCoordinator: RootCoordinatorType {
         self.statsProcessor = processor
         processor.coordinator = self
         let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.modalPresentationStyle = .popover
+        navigationController.popoverPresentationController?.sourceItem = source
+        navigationController.popoverPresentationController?.delegate = viewController
         self.rootViewController?.present(navigationController, animated: unlessTesting(true))
     }
 
@@ -89,3 +94,4 @@ final class RootCoordinator: RootCoordinatorType {
         }
     }
 }
+
