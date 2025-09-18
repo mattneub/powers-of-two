@@ -40,8 +40,8 @@ struct HelpViewControllerTests {
         await subject.present(HelpState(contentURL: url))
         #expect(subject.presentedInitialInterface == true)
         #expect(webView.methodsCalled == ["loadFileURL(_:allowingReadAccessTo:)"])
-        #expect(webView.loadURL == url)
-        #expect(webView.readAccessURL == url)
+        #expect(webView.loadURL == URL(string: "http://www.example.com")!)
+        #expect(webView.readAccessURL == URL(string: "http://www.example.com/helppix/")!)
     }
 
     @Test("doDone: calls done")

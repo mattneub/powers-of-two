@@ -10,7 +10,7 @@ final class StatsViewController: UIViewController, ReceiverPresenter {
     @IBOutlet var contentView: UIView!
 
     /// The type of the entry container view, factored out so we can inject a mock for testing.
-    typealias ContainerView = UIView & Presenter<StatsState.HistogramEntry>
+    typealias ContainerView = UIView & Presenter<(StatsState.HistogramEntry, Int)>
     var containerViewType: any ContainerView.Type = HistogramEntryContainerView.self
 
     /// Flag so we don't accidentally create the histogram entry container interface twice.
@@ -40,6 +40,7 @@ final class StatsViewController: UIViewController, ReceiverPresenter {
             return
         }
         entriesConfigured = true
+        let maxLengthNeeded = histogram.map(\.count).map(String.init).map { $0.count }.max() ?? 4
         var previous: UIView?
         for entry in histogram {
             let entryContainerView = containerViewType.init(frame: .zero)
@@ -52,7 +53,7 @@ final class StatsViewController: UIViewController, ReceiverPresenter {
                 entryContainerView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
             }
             previous = entryContainerView
-            await entryContainerView.present(entry) // pass presentation for this one entry on to the subview
+            await entryContainerView.present((entry, maxLengthNeeded)) // pass presentation for this one entry on to the subview
         }
         previous?.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
     }

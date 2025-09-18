@@ -44,7 +44,7 @@ struct StatsViewControllerTests {
         let histogram: [StatsState.HistogramEntry] = [
             .init(score: 1, count: 2),
             .init(score: 3, count: 4),
-            .init(score: 5, count: 6),
+            .init(score: 5, count: 16),
         ]
         subject.containerViewType = MockContainer.self
         await subject.present(StatsState(histogram: histogram))
@@ -56,8 +56,9 @@ struct StatsViewControllerTests {
             // good enough, we've got layout
             #expect($0.statesPresented.count == 1)
         }
-        // one histogram entry was presented to each container view
-        #expect(containers.map { $0.statesPresented[0] } == histogram)
+        // one histogram entry was presented to each container view, with max length calculated
+        #expect(containers.map { $0.statesPresented[0].0 } == histogram)
+        #expect(containers.map { $0.statesPresented[0].1 }.allSatisfy { $0 == 2 })
         #expect(subject.entriesConfigured == true)
         // try presenting again, even though this should never happen
         await subject.present(StatsState(histogram: histogram))
@@ -74,7 +75,7 @@ struct StatsViewControllerTests {
 }
 
 final class MockContainer: UIView, Presenter {
-    var statesPresented = [StatsState.HistogramEntry]()
+    var statesPresented = [(StatsState.HistogramEntry, Int)]()
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -82,7 +83,7 @@ final class MockContainer: UIView, Presenter {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func present(_ state: StatsState.HistogramEntry) async {
+    func present(_ state: (StatsState.HistogramEntry, Int)) async {
         statesPresented.append(state)
     }
 }

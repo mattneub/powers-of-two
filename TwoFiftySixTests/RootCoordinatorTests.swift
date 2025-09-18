@@ -10,10 +10,11 @@ struct RootCoordinatorTests {
         let subject = RootCoordinator()
         subject.createInitialInterface(window: window)
         let processor = try #require(subject.gameProcessor as? GameProcessor)
-        let viewController = try #require(subject.rootViewController as? GameViewController)
+        let navigationController = try #require(subject.rootViewController as? UINavigationController)
+        let viewController = try #require(navigationController.viewControllers[0] as? GameViewController)
         #expect(processor.presenter === viewController)
         #expect(viewController.processor === processor)
-        #expect(window.rootViewController === viewController)
+        #expect(window.rootViewController === navigationController)
         #expect(processor.coordinator === subject)
     }
 

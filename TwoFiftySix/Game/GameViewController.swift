@@ -20,6 +20,10 @@ final class GameViewController: UIViewController, ReceiverPresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
         highest.text = " "
+        let newGame = UIBarButtonItem(title: "New Game", image: nil, target: self, action: #selector(doNew))
+        let flex = UIBarButtonItem.flexibleSpace()
+        let help = UIBarButtonItem(title: nil, image: UIImage(systemName: "questionmark.circle"), target: self, action: #selector(doHelp))
+        setToolbarItems([newGame, flex, help], animated: true)
         // Prepare to respond to swipe gestures.
         do {
             let g = MySwipeGestureRecognizer(target: self, action: #selector(swipe))
@@ -102,7 +106,7 @@ final class GameViewController: UIViewController, ReceiverPresenter {
     }
 
     /// The user tapped the New Game button.
-    @IBAction func doNew(_ sender: Any) {
+    @objc func doNew(_ sender: Any) {
         Task {
             await processor?.receive(.newGame)
         }
@@ -116,7 +120,7 @@ final class GameViewController: UIViewController, ReceiverPresenter {
     }
 
     /// The user tapped the Help button.
-    @IBAction func doHelp(_ sender: Any) {
+    @objc func doHelp(_ sender: Any) {
         Task {
             await processor?.receive(.help)
         }

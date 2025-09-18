@@ -39,8 +39,11 @@ final class RootCoordinator: RootCoordinatorType {
         viewController.processor = processor
         processor.presenter = viewController
         self.gameProcessor = processor
-        window.rootViewController = viewController
-        self.rootViewController = viewController
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.isNavigationBarHidden = true
+        navigationController.isToolbarHidden = false
+        window.rootViewController = navigationController
+        self.rootViewController = navigationController
         processor.coordinator = self
     }
 

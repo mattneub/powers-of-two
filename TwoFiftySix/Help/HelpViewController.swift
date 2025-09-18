@@ -43,7 +43,7 @@ final class HelpViewController: UIViewController, ReceiverPresenter {
         if !presentedInitialInterface {
             if let url = state.contentURL {
                 presentedInitialInterface = true
-                webView?.loadFileURL(url, allowingReadAccessTo: url)
+                webView?.loadFileURL(url, allowingReadAccessTo: url.appendingPathComponent("helppix", conformingTo: .directory))
             }
         }
     }

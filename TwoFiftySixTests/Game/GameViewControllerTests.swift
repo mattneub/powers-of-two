@@ -18,8 +18,20 @@ struct GameViewControllerTests {
         highest.text = "hello"
     }
 
-    @Test("viewDidLoad: adds swipe gesture recognizers, empties highest label")
+    @Test("viewDidLoad: adds toolbar items, makes swipe gesture recognizers, empties highest label")
     func viewDidLoad() throws {
+        subject.loadViewIfNeeded()
+        let items = try #require(subject.toolbarItems)
+        #expect(items.count == 3)
+        #expect(items[0].title == "New Game")
+        #expect(items[0].image == nil)
+        #expect(items[0].target === subject)
+        #expect(items[0].action == #selector(subject.doNew))
+        // items 1 is flexible space, no test (could do it by subclassing)
+        #expect(items[2].title == nil)
+        #expect(items[2].image == UIImage(systemName: "questionmark.circle"))
+        #expect(items[2].target === subject)
+        #expect(items[2].action == #selector(subject.doHelp))
         let recognizers = try #require(subject.view.gestureRecognizers)
         #expect(recognizers.count == 4)
         #expect(recognizers.allSatisfy { $0 is UISwipeGestureRecognizer })

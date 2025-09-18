@@ -13,11 +13,11 @@ struct HistogramEntryContainerViewTests {
         #expect(subject.times.isDescendant(of: entry))
     }
 
-    @Test("present: sets text of labels")
+    @Test("present: sets text of labels, including padding count")
     func present() {
-        subject.present(.init(score: 100, count: 200))
+        subject.present((.init(score: 100, count: 2), 3))
         #expect(subject.score.text == "100")
-        #expect(subject.times.text == "200")
+        #expect(subject.times.text == "\u{2007}\u{2007}2")
     }
 
     @Test("view looks right")
@@ -25,7 +25,7 @@ struct HistogramEntryContainerViewTests {
         let viewController = UIViewController()
         makeWindow(viewController: viewController)
         viewController.view.addSubview(subject)
-        subject.present(.init(score: 100, count: 200))
+        subject.present((.init(score: 100, count: 200), 3))
         subject.widthAnchor.constraint(equalTo: viewController.view.widthAnchor).isActive = true
         subject.centerYAnchor.constraint(equalTo: viewController.view.centerYAnchor).isActive = true
         assertSnapshot(of: viewController.view, as: .image)

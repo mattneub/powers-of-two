@@ -29,9 +29,14 @@ final class HistogramEntryContainerView: UIView, Presenter {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func present(_ entry: StatsState.HistogramEntry) {
+    func present(_ state: (StatsState.HistogramEntry, Int)) {
+        let (entry, maxLengthNeeded) = state
         score.text = String(entry.score)
-        times.text = String(entry.count)
+        var count = String(entry.count)
+        while count.count < maxLengthNeeded {
+            count = "\u{2007}" + count // pad on left with space the width of a digit
+        }
+        times.text = count
     }
 }
 
