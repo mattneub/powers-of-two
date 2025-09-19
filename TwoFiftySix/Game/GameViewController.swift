@@ -13,6 +13,8 @@ final class GameViewController: UIViewController, ReceiverPresenter {
 
     @IBOutlet var highest: UILabel!
 
+    @IBOutlet var statsButton: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         highest.text = " "
@@ -77,9 +79,10 @@ final class GameViewController: UIViewController, ReceiverPresenter {
             let alert = UIAlertController(
                 title: "No high scores yet.",
                 message: nil,
-                preferredStyle: .alert
+                preferredStyle: .actionSheet // trick to get popover
             )
             alert.addAction(.init(title: "OK", style: .default))
+            alert.popoverPresentationController?.sourceItem = statsButton
             present(alert, animated: unlessTesting(true))
         default: // other effects are passed on to the board
             if let board = board as? any Receiver<GameEffect> {

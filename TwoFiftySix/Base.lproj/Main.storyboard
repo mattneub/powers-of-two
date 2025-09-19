@@ -56,6 +56,7 @@
                     <connections>
                         <outlet property="board" destination="3ZU-ae-0JU" id="3l8-gt-m7u"/>
                         <outlet property="highest" destination="USy-OH-WKD" id="5eY-Ds-CBz"/>
+                        <outlet property="statsButton" destination="Dc2-c7-i6h" id="je5-jn-i9u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -84,6 +84,9 @@ struct GameViewControllerTests {
         #expect(alert.title == "No high scores yet.")
         #expect(alert.actions.count == 1)
         #expect(alert.actions.first?.title == "OK")
+        #expect(alert.preferredStyle == .actionSheet)
+        let popover = try #require(alert.popoverPresentationController)
+        #expect(popover.sourceItem as? UIButton === subject.statsButton)
     }
 
     @Test("receive: otherwise passes effect on to board")
